@@ -1,0 +1,60 @@
+@import "../../App.scss";
+
+.flex-box {
+  display: flex;
+  --flex-gap-space: 12px;
+  align-items: unset;
+  align-content: unset;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  &__item {
+    border: 1px solid grey;
+    width: 100%;
+    margin-bottom: 1rem;
+    width: calc((100% - var(--flex-gap-space) * (var(--flex-cols-per-row) - 1))/var(--flex-cols-per-row));
+    flex-shrink: 0;
+
+    @mixin item-cols($width) {
+      @if $width==33 {
+        --flex-cols-per-row: 3;
+      }
+
+      @else if $width==66 {
+        --flex-cols-per-row: 1.5;
+      }
+
+      @else {
+        --flex-cols-per-row: (100/#{$width});
+      }
+    }
+
+    @mixin item($modifier) {
+      @each $width in (10, 20, 25, 30, 33, 40, 50, 60, 66, 70, 75, 80, 90, 100) {
+        &--#{$width + $modifier} {
+          @include item-cols($width);
+        }
+      }
+    }
+
+    @include item('');
+
+    @include tablet {
+      @include item(--large);
+    }
+
+    @include desktop {
+      @include item(--large);
+    }
+
+    // &--10 {
+    //   --flex-cols-per-row: calc(100/10);
+    // }
+
+    // @include item(30);
+
+    // &--50 {
+    //   --flex-cols-per-row: calc(100/50);
+    // }
+  }
+}

@@ -1,3 +1,31 @@
+@import "~include-media/dist/include-media";
+
+// Using SCSS variables to store breakpoints
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+
+@mixin tablet {
+  @include media(">=#{$breakpoint-tablet}") {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-desktop}) {
+    @content;
+  }
+}
+
+@include media(">tablet") {
+  display: inline;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -32,6 +60,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
