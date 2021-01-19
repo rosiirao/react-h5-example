@@ -1,0 +1,14 @@
+.transform-box {
+  border-radius: 0.5rem;
+  background-color: rgba(194, 143, 68, 0.3);
+  padding: 0.5rem;
+  transform-style: preserve-3d;
+
+  input[type=number] {
+    width: 5rem;
+    text-align: right;
+    font-size: 1.2rem;
+    padding: 0, 0.2rem;
+    vertical-align: bottom;
+  }
+}
