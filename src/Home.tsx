@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 import FlexBox from "./pages/FlexBox";
 import Transform from "./pages/Transform";
+import routers from './router';
 
 export default function Home() {
   return (
@@ -17,6 +18,9 @@ export default function Home() {
           <Route path="/transform">
             <Transform />
           </Route>
+          {
+            routers.map(r => (<Route key={r.path} exact={!!r.exact} path={r.path} >{r.component}</Route>))
+          }
         </Switch>
       </Route>
     </Router>
