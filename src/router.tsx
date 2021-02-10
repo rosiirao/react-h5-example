@@ -11,6 +11,7 @@ const routers = [
   },
   {
     path: '/flex-box',
+    label: '/flex-box',
     component: <FlexBox />,
   },
   {
