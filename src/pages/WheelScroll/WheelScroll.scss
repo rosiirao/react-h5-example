@@ -1,10 +1,10 @@
 .wheel-box {
-  width: 50%;
-  height: 50%;
+  width: 50vw;
+  height: 50vh;
   border: 1px dotted gray;
   position: absolute;
-  top: 25%;
-  left: 25%;
+  top: 25vh;
+  left: 25vw;
   overflow: scroll;
   // touch-action: none;
 }
@@ -26,6 +26,26 @@
   top: calc(50% - 1em/2);
   left: calc(50% - 1em/2);
   font-size: 5rem;
-  transition: transform 1s linear;
+  transition: transform 0.5s linear;
   line-height: 1em;
+}
+
+.smile-control {
+  overflow: visible;
+  position: absolute;
+  top: 75vh;
+  left: 25vw;
+  width: 50vw;
+}
+
+.smile-scale {
+  width: 50vw;
+}
+
+.smile-rotate {
+  width: 50vh;
+  position: absolute;
+  left: 5em;
+  bottom: calc(25vh + 1em);
+  transform: rotateZ(90deg);
 }

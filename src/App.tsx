@@ -23,7 +23,7 @@ function App() {
           <ul>
             {
               router.filter(({ path }) => path !== '/').map(({ path, label }) => (
-                <li>
+                <li key={path}>
                   <Link className="App-link" to={path}>{label ?? path}</Link>
                 </li>
               ))
