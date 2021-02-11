@@ -3,7 +3,7 @@ import './WheelScroll.scss';
 import debounce from 'lodash/debounce';
 
 // intersectionObserver 可在元素显示时触发
-const intersectionObserver = new IntersectionObserver(function (entries) {
+const intersectionObserver = new globalThis.IntersectionObserver(function (entries) {
   // If intersectionRatio is 0, the target is out of view
   // and we do not need to do anything.
   if (entries[0].intersectionRatio <= 0) return;
@@ -50,9 +50,10 @@ const useTransformStyle = ([scale, rotate]: StyleProp) => {
     });
   }
   return [
+    [currentScale, currentRotate],
     fromTransformStyle(toTransformStyle(currentScale, currentRotate)),
     setTransformStyle
-  ] as [string, React.Dispatch<React.SetStateAction<StyleProp>>];
+  ] as [StyleProp, string, React.Dispatch<React.SetStateAction<StyleProp>>];
 }
 
 /**
@@ -60,6 +61,7 @@ const useTransformStyle = ([scale, rotate]: StyleProp) => {
  */
 export default function WheelEvent() {
   const wheelBox = useRef<HTMLDivElement>(null);
+  const wheelContent = useRef<HTMLDivElement>(null);
   const onWheel: React.WheelEventHandler = (event) => {
     // onWheel passive event, the preventDefault is ignored
     event.preventDefault();
@@ -68,15 +70,23 @@ export default function WheelEvent() {
     // setTransformStyle(([scale, rotate]: StyleProp) => [(scale + event.deltaY), rotate]);
   };
 
+  const [[scale, rotate], transformStyle, setTransformStyle] = useTransformStyle([1, 0]);
 
-  const [transformStyle, setTransformStyle] = useTransformStyle([1, 0]);
-  const MAX_TOP = 108;
+  const debounceSetScale = useMemo(() => debounce((scale: number) => {
+    setTransformStyle(([_, rotate]: StyleProp) => [scale, rotate]);
+  }, 10), [setTransformStyle]);
+
+  const [scrollBox, setScrollBox] = useState({ h: 900, w: 3 });
+  const debounceSetRotateByScroll = useMemo(() => debounce((top: number, left: number) => {
+    setTransformStyle(([scale]: StyleProp) => [2 * left / scrollBox.w + 1, (top / scrollBox.h) * 900]);
+  }), [setTransformStyle, scrollBox]);
   const debounceSetRotate = useMemo(() => debounce((top: number) => {
-    setTransformStyle(([scale]: StyleProp) => [scale, (top / MAX_TOP) * 360]);
-  }), [setTransformStyle]);
+    setTransformStyle(([scale]: StyleProp) => [scale, top]);
+  }, 10), [setTransformStyle]);
   const onScroll = (event: React.UIEvent) => {
     const top = event.currentTarget.scrollTop;
-    debounceSetRotate(top);
+    const left = event.currentTarget.scrollLeft;
+    debounceSetRotateByScroll(top, left);
     // setTransformStyle(([scale]: StyleProp) => [scale, (top / MAX_TOP) * 360]);
   }
 
@@ -85,10 +95,20 @@ export default function WheelEvent() {
     if (smile.current !== null) {
       intersectionObserver.observe(smile.current);
     }
+    setScrollBox({
+      h: (wheelContent.current?.offsetHeight ?? 900) - (wheelBox.current?.offsetHeight ?? 0),
+      w: (wheelContent.current?.offsetWidth ?? 1) - (wheelBox.current?.offsetWidth ?? 0)
+    });
     return () => {
       intersectionObserver.disconnect();
     }
-  }, []);
+  }, [wheelContent]);
+  const onChangeRotate: React.EventHandler<React.ChangeEvent<HTMLInputElement>> = (event) => {
+    debounceSetRotate(Number(event.currentTarget.value));
+  }
+  const onChangeScale: React.EventHandler<React.ChangeEvent<HTMLInputElement>> = (event) => {
+    debounceSetScale(Number(event.currentTarget.value));
+  }
   // useLayoutEffect(() => {
   //   const wheelBoxDiv = wheelBox.current;
   //   const onScroll = (event: Event) => {
@@ -102,9 +122,18 @@ export default function WheelEvent() {
   //     wheelBoxDiv?.removeEventListener('scroll', onScroll);
   //   }
   // });
-  return (<div className="wheel-box" ref={wheelBox} onScroll={onScroll}>
-    <div className="smile" ref={smile} style={{ transform: transformStyle }}>🤓</div>
-    <div className="wheel-content" onWheel={onWheel}>
+  return (<>
+    <div className="wheel-box" ref={wheelBox} onScroll={onScroll}>
+      <div className="smile" ref={smile} style={{ transform: transformStyle }}>🤓</div>
+      <div className="wheel-content" onWheel={onWheel} ref={wheelContent}>    </div>
     </div>
-  </div>)
+    <form name="smile-control" className="smile-control">
+      <input type="range" name="smile-rotate" className="smile-rotate" min="-900" max="900" step="1"
+        onChange={onChangeRotate} value={rotate}
+      ></input>
+      <input type="range" name="smile-scale" className="smile-scale" min="0.3" max="3" step="0.1"
+        onChange={onChangeScale} value={scale}
+      ></input>
+    </form>
+  </>)
 }
