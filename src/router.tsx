@@ -7,7 +7,7 @@ const routers = [
   {
     exact: true,
     path: '/',
-    component: <App />,
+    component: () => <App />,
   },
   {
     path: '/flex-box',
