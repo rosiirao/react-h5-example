@@ -1,6 +1,6 @@
 # css-example
 
-Study CSS by some project
+Study CSS by some examples
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -15,6 +15,34 @@ See different examples by urls.
 ### /flex-box
 
 See flex examples.
+
+## React Knowledge
+
+### Unsafe lifetime functions after updating on async rendering
+
+#### unsafe_componentWillMount
+
+*ComponentWillMount* maybe called many times.<br />
+Only once *componentDidMount* has been called does React guarantee that *componentWillUnmount* will later be called for clean up.
+
+- initializing state: move state initialization to the constructor or to a property initializer
+- fetching data: move to *componentDidMount*
+- adding event listener: move to *componentDidMount* or *[create-subscription](https://github.com/facebook/react/tree/master/packages/create-subscription)*
+
+#### unsafe_componentWillReceiveProps
+
+- updating state based on props: move to *static getDerivedStateFromProps(props, state)*, which is called when a component is created and each time it re-renders due to changes to props or state
+- side effects changed: move to *componentDidUpdate*
+- fetching external data when props change: move to *static getDerivedStateFromProps(props, state)* which return null state and *componentDidUpdate* which fetch data
+
+#### unsafe_componentWillUpdate
+
+*ComponentWillUpdate* might get called multiple times for a single update.<br />
+React ensures that any *setState* calls that happen during *componentDidMount* and *componentDidUpdate* are flushed before the user sees the updated UI.<br />
+There may be delays between “render” phase lifecycles (like *componentWillUpdate* and *render*) and “commit” phase lifecycles (like *componentDidUpdate*).
+
+- invoking external callbacks: move to *componentDidUpdate*
+- reading DOM properties before an update: move to *getSnapshotBeforeUpdate(prevProps, prevState)*
 
 ## Available Scripts
 
