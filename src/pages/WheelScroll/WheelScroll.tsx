@@ -78,7 +78,7 @@ export default function WheelEvent() {
 
   const [scrollBox, setScrollBox] = useState({ h: 900, w: 3 });
   const debounceSetRotateByScroll = useMemo(() => debounce((top: number, left: number) => {
-    setTransformStyle(([scale]: StyleProp) => [2 * left / scrollBox.w + 1, (top / scrollBox.h) * 900]);
+    setTransformStyle((_: StyleProp) => [2 * left / scrollBox.w + 1, (top / scrollBox.h) * 900]);
   }), [setTransformStyle, scrollBox]);
   const debounceSetRotate = useMemo(() => debounce((top: number) => {
     setTransformStyle(([scale]: StyleProp) => [scale, top]);
@@ -125,7 +125,7 @@ export default function WheelEvent() {
   return (<>
     <div className="wheel-box" ref={wheelBox} onScroll={onScroll}>
       <div className="smile" ref={smile} style={{ transform: transformStyle }}>🤓</div>
-      <div className="wheel-content" onWheel={onWheel} ref={wheelContent}>    </div>
+      <div className="wheel-content" onWheel={onWheel} ref={wheelContent}>TOP</div>
     </div>
     <form name="smile-control" className="smile-control">
       <input type="range" name="smile-rotate" className="smile-rotate" min="-900" max="900" step="1"
