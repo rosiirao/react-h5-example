@@ -10,7 +10,7 @@
 }
 
 .wheel-content {
-  width: 100vw;
+  width: 200vw;
   height: 500vh;
   display: flex;
   align-items: center;
@@ -45,7 +45,7 @@
 .smile-rotate {
   width: 50vh;
   position: absolute;
-  left: 5em;
+  left: calc(50vw - 25vh + 1em);
   bottom: calc(25vh + 1em);
   transform: rotateZ(90deg);
 }
