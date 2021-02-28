@@ -1,6 +1,6 @@
-import App from "./App";
-import FlexBox from "./pages/FlexBox";
-import Transform from "./pages/Transform";
+import App from './App';
+import FlexBox from './pages/FlexBox';
+import Transform from './pages/Transform';
 import WheelScroll from './pages/WheelScroll';
 
 const routers = [

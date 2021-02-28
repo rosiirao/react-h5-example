@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import routers from './router';
 
 export default function Home() {
@@ -6,9 +6,11 @@ export default function Home() {
     <Router>
       <Route>
         <Switch>
-          {
-            routers.map(r => (<Route key={r.path} exact={!!r.exact} path={r.path} >{r.component}</Route>))
-          }
+          {routers.map(r => (
+            <Route key={r.path} exact={!!r.exact} path={r.path}>
+              {r.component}
+            </Route>
+          ))}
         </Switch>
       </Route>
     </Router>

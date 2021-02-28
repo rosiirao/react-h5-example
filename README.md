@@ -16,6 +16,21 @@ See different examples by urls.
 
 See flex examples.
 
+#### Grid tutorial
+
+- Grid Container – The element that establishes the grid and that wraps the grid items
+- Grid Items – The child elements inside a grid container
+- Grid Lines – Horizontal and vertical lines that divide the grid
+- Grid Tracks – Any grid column or row (i.e. what’s between grid lines)
+- Grid Cell – A single cell, like in a table, where a column and row intersects
+- Grid Area – Any rectangular area of one or more cells, bound by four grid lines
+
+##### Grid container
+
+- Contents comprise a grid, with grid lines forming boundaries around each grid area
+- The following properties have no effect on grid items: *float*, *clear*, *vertical-align*
+- Margins don’t collapse inside a grid container
+
 ## React Knowledge
 
 ### Unsafe lifetime functions after updating on async rendering
