@@ -1,7 +1,7 @@
-import "./FlexBox.scss";
+import './FlexBox.scss';
 
 function FlexBox() {
-  const contents = ["one item", "two item", "three item"];
+  const contents = ['one item', 'two item', 'three item'];
   return (
     <div className="flex-box">
       {contents.map((c, i) => (

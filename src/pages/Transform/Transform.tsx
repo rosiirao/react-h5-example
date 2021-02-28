@@ -30,14 +30,14 @@
  * where <length-percentage> = <length> | <percentage>
  */
 
-import React, { useState } from "react";
-import "./Transform.scss";
+import React, {useState} from 'react';
+import './Transform.scss';
 
-const Transform: React.FC<{}> = (props) => {
-  const box = ["192px", "192px"];
+const Transform: React.FC<{}> = props => {
+  const box = ['192px', '192px'];
   const [matrixStyle, setMatrixStyle] = useState([1, 0, 0, 1, 0, 0]);
   const handleMatrix = (index: number, value: number) => {
-    setMatrixStyle((matrixStyle) =>
+    setMatrixStyle(matrixStyle =>
       matrixStyle.map((v, i) => (i === index ? value : v))
     );
   };
@@ -53,7 +53,7 @@ const Transform: React.FC<{}> = (props) => {
         <input
           type="number"
           value={matrixStyle[0]}
-          onChange={(event) => {
+          onChange={event => {
             handleMatrix(0, Number(event.currentTarget.value));
           }}
         />
@@ -61,7 +61,7 @@ const Transform: React.FC<{}> = (props) => {
         <input
           type="number"
           value={matrixStyle[1]}
-          onChange={(event) => {
+          onChange={event => {
             handleMatrix(1, Number(event.currentTarget.value));
           }}
         />
@@ -69,7 +69,7 @@ const Transform: React.FC<{}> = (props) => {
         <input
           type="number"
           value={matrixStyle[2]}
-          onChange={(event) => {
+          onChange={event => {
             handleMatrix(2, Number(event.currentTarget.value));
           }}
         />
@@ -77,7 +77,7 @@ const Transform: React.FC<{}> = (props) => {
         <input
           type="number"
           value={matrixStyle[3]}
-          onChange={(event) => {
+          onChange={event => {
             handleMatrix(3, Number(event.currentTarget.value));
           }}
         />
@@ -86,7 +86,7 @@ const Transform: React.FC<{}> = (props) => {
           type="number"
           value={matrixStyle[4]}
           step="10"
-          onChange={(event) => {
+          onChange={event => {
             handleMatrix(4, Number(event.currentTarget.value));
           }}
         />
@@ -95,7 +95,7 @@ const Transform: React.FC<{}> = (props) => {
           type="number"
           value={matrixStyle[5]}
           step="10"
-          onChange={(event) => {
+          onChange={event => {
             handleMatrix(5, Number(event.currentTarget.value));
           }}
         />
@@ -120,20 +120,20 @@ const Transform: React.FC<{}> = (props) => {
           matrixStyle[5],
           0,
           1,
-        ].join(",")}
+        ].join(',')}
         )
       </div>
       <div
         style={{
-          backgroundColor: "rgba(150,50,0,0.5)",
-          border: "1px solid grey",
+          backgroundColor: 'rgba(150,50,0,0.5)',
+          border: '1px solid grey',
           height: box[1],
           width: box[0],
-          transition: "transform 3s",
-          transform: `matrix(${matrixStyle.join(",")})`,
+          transition: 'transform 3s',
+          transform: `matrix(${matrixStyle.join(',')})`,
         }}
       >
-        <img src={"logo192.png"} alt="log" />
+        <img src={'logo192.png'} alt="log" />
       </div>
     </div>
   );

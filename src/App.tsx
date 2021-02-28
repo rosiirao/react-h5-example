@@ -1,7 +1,7 @@
-import logo from "./logo.svg";
-import "./App.scss";
+import logo from './logo.svg';
+import './App.scss';
 import router from './router';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 function App() {
   return (
@@ -19,15 +19,17 @@ function App() {
         >
           Learn React
         </a>
-        <nav style={{ textAlign: 'left' }}>
+        <nav style={{textAlign: 'left'}}>
           <ul>
-            {
-              router.filter(({ path }) => path !== '/').map(({ path, label }) => (
+            {router
+              .filter(({path}) => path !== '/')
+              .map(({path, label}) => (
                 <li key={path}>
-                  <Link className="App-link" to={path}>{label ?? path}</Link>
+                  <Link className="App-link" to={path}>
+                    {label ?? path}
+                  </Link>
                 </li>
-              ))
-            }
+              ))}
           </ul>
         </nav>
       </header>

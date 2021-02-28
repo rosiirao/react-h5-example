@@ -1,1 +1,1 @@
-export { default } from './WheelScroll';
+export {default} from './WheelScroll';
