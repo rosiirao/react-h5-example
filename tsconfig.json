@@ -4,7 +4,7 @@
     "rootDir": ".",
     "outDir": "build",
     "esModuleInterop": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx", //'react-jsxdev' for development environment
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "noPropertyAccessFromIndexSignature": true,
     "allowJs": true,

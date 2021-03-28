@@ -36,7 +36,7 @@ const useTransformStyle = ([scale, rotate]: StyleProp) => {
   // 一个延迟恢复设置缩放最大值
   const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const setTransformStyle = (
-    setAction: StyleProp | ((prevStyle: StyleProp) => StyleProp)
+    setAction: StyleProp | ((_prevStyle: StyleProp) => StyleProp)
   ) => {
     setStyle(prevStyle => {
       const [scale, rotate] =
@@ -87,7 +87,7 @@ export default function WheelEvent() {
   const debounceSetScale = useMemo(
     () =>
       debounce((scale: number) => {
-        setTransformStyle(([_, rotate]: StyleProp) => [scale, rotate]);
+        setTransformStyle(([, rotate]: StyleProp) => [scale, rotate]);
       }, 10),
     [setTransformStyle]
   );
@@ -96,7 +96,7 @@ export default function WheelEvent() {
   const debounceSetRotateByScroll = useMemo(
     () =>
       debounce((top: number, left: number) => {
-        setTransformStyle((_: StyleProp) => [
+        setTransformStyle((/*_: StyleProp*/) => [
           (2 * left) / scrollBox.w + 1,
           (top / scrollBox.h) * 900,
         ]);

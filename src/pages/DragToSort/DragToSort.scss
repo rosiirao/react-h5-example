@@ -1,0 +1,70 @@
+.drag-content {
+  margin-bottom: 2em;
+}
+
+.drop-monitor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 0.5rem;
+}
+
+@mixin column {
+  border: 1px solid gray;
+  margin: 0;
+}
+
+@mixin pseudo-list-item {
+  display: block;
+  height: 0.2em;
+  text-align: right;
+  overflow: hidden;
+}
+
+@mixin list-item-dropping {
+  background-color: chartreuse;
+}
+
+.drop-list {
+  @include column;
+
+  &:not(&--drag-over)::before {
+    content: 'before';
+    @include pseudo-list-item;
+  }
+
+  &:not(&--drag-over)::after {
+    content: 'after';
+    @include pseudo-list-item;
+  }
+
+  // the pseudo item for place item
+  &__item--pseudo {
+    @include pseudo-list-item;
+
+    // visibility: hidden;
+    &.u-dropping-after {
+      @include list-item-dropping()
+    }
+
+    overflow: hidden;
+  }
+
+  &__item {
+
+    &:hover {
+      background-color: bisque;
+    }
+
+    &.u-dropping-after::after {
+      content: 'insert';
+      @include pseudo-list-item;
+      @include list-item-dropping()
+    }
+  }
+}
+
+.drop-log {
+  @include column;
+  white-space: nowrap;
+  line-height: 1.2rem;
+}
