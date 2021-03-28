@@ -33,7 +33,7 @@
 import React, {useState} from 'react';
 import './Transform.scss';
 
-const Transform: React.FC<{}> = props => {
+const Transform: React.FC<{}> = (/*props*/) => {
   const box = ['192px', '192px'];
   const [matrixStyle, setMatrixStyle] = useState([1, 0, 0, 1, 0, 0]);
   const handleMatrix = (index: number, value: number) => {

@@ -2,6 +2,7 @@ import App from './App';
 import FlexBox from './pages/FlexBox';
 import Transform from './pages/Transform';
 import WheelScroll from './pages/WheelScroll';
+import DragToSort from './pages/DragToSort';
 
 const routers = [
   {
@@ -21,6 +22,10 @@ const routers = [
   {
     path: '/wheel-scroll',
     component: <WheelScroll />,
+  },
+  {
+    path: '/drag-to-sort',
+    component: <DragToSort />,
   },
 ];
 

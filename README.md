@@ -59,6 +59,12 @@ There may be delays between “render” phase lifecycles (like *componentWillUp
 - invoking external callbacks: move to *componentDidUpdate*
 - reading DOM properties before an update: move to *getSnapshotBeforeUpdate(prevProps, prevState)*
 
+## Push Notification
+
+1. The push service provided by the platform(e.g. Windows Notification Services for Edge or Firebase Cloud Messaging for Chrome)
+2. Your client application running on the user's devices
+3. Your application server running in you data center or in the cloud which sends push messages to clients via the respective push service
+
 ## Available Scripts
 
 In the project directory, you can run:

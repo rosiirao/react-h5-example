@@ -7,6 +7,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {color: #333; background: #fff;}
+
+/* Set dark mode styles */
+@media (prefers-color-scheme: dark) {
+  body {color: #fff; background: #333;}
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
