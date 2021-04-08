@@ -3,6 +3,7 @@ import FlexBox from './pages/FlexBox';
 import Transform from './pages/Transform';
 import WheelScroll from './pages/WheelScroll';
 import DragToSort from './pages/DragToSort';
+import ErrorHandle from './pages/ErrorHandle';
 
 const routers = [
   {
@@ -26,6 +27,10 @@ const routers = [
   {
     path: '/drag-to-sort',
     component: <DragToSort />,
+  },
+  {
+    path: '/error-handle',
+    component: () => <ErrorHandle />,
   },
 ];
 

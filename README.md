@@ -59,6 +59,17 @@ There may be delays between “render” phase lifecycles (like *componentWillUp
 - invoking external callbacks: move to *componentDidUpdate*
 - reading DOM properties before an update: move to *getSnapshotBeforeUpdate(prevProps, prevState)*
 
+#### Error Boundaries
+
+Error boundaries work like a JavaScript catch {} block, but for components. Only class components can be error boundaries. In practice, most of the time you’ll want to declare an error boundary component once and use it throughout your application.
+
+Error boundaries do **not** catch errors for:
+
+- Event handlers [learn more](https://reactjs.org/docs/hooks-reference.html#how-about-event-handlers)
+- Asynchronous code (e.g. setTimeout or requestAnimationFrame callbacks)
+- Server side rendering
+- Errors thrown in the error boundary itself (rather than its children)
+
 ## Push Notification
 
 1. The push service provided by the platform(e.g. Windows Notification Services for Edge or Firebase Cloud Messaging for Chrome)
