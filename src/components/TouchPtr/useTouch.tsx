@@ -88,7 +88,7 @@ const useTouch = (threshold: number) => {
     setMove(touches.reduce((sum, {offsetY}) => sum + offsetY, 0));
   }, [touches, threshold]);
 
-  return {onTouch, move, cancelled, touches};
+  return {onTouch, move, cancelled};
 };
 
 export default useTouch;
