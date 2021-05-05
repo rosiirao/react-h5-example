@@ -1,0 +1,32 @@
+.touch-ptr__indicator {
+  margin: 0 auto;
+  --indicator-size: 1.2rem;
+  width: var(--indicator-size);
+}
+
+.touch-ptr {
+  margin-top: -1.2rem;
+}
+
+.touch-ptr-indicator {
+  width: var(--indicator-size);
+  height: var(--indicator-size);
+
+  &:is(&--ready, &--fullfil) {
+    border-style: solid;
+    border-color: #345;
+    border-width: 0 0.2rem .2rem 0;
+    transform: rotate(45deg);
+
+    &::before {
+      content: '';
+      border-top: .2rem solid #345;
+      position: absolute;
+      width: 1.6rem;
+      height: 0rem;
+      background: transparent;
+      transition: transform 0.5s;
+      transform: translate(-0.25rem, 0.45rem) rotate(45deg);
+    }
+  }
+}

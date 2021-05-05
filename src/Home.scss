@@ -1,0 +1,5 @@
+.layout {
+  height: 100%;
+  display: grid;
+  grid-template-rows: max-content minmax(0, 1fr);
+}

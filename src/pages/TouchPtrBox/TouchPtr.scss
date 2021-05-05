@@ -1,0 +1,20 @@
+.ptr__layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  background-color: cornsilk;
+
+  &>section {
+    flex: auto 1 1;
+  }
+}
+
+.ptr__content {
+  background-color: lightblue;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  scroll-behavior: smooth;
+}

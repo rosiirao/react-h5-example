@@ -5,6 +5,7 @@ import WheelScroll from './pages/WheelScroll';
 import DragToSort from './pages/DragToSort';
 import ErrorHandle from './pages/ErrorHandle';
 import Toast from './pages/Toast';
+import TouchPtrBox from './pages/TouchPtrBox';
 
 const routers = [
   {
@@ -36,6 +37,10 @@ const routers = [
   {
     path: '/toast',
     component: () => <Toast />,
+  },
+  {
+    path: '/touch-pull-to-refresh',
+    component: () => <TouchPtrBox />,
   },
 ];
 
