@@ -1,0 +1,59 @@
+:root {
+  --preloader-yellow: #feb60a;
+  --preloader-red: #ff0062;
+  --preloader-blue: #00dbf9;
+  --preloader-violet: #da00f7;
+}
+
+.preloader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.preloader > * {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100%;
+  margin: 2vw;
+  background-image: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  animation: bounce 1.5s 0.5s linear infinite;
+}
+.preloader__yellow {
+  background-color: var(--preloader-yellow);
+}
+
+.preloader__red {
+  background-color: var(--preloader-red);
+  animation-delay: 0.1s;
+}
+
+.preloader__blue {
+  background-color: var(--preloader-blue);
+  animation-delay: 0.2s;
+}
+
+.preloader__violet {
+  background-color: var(--preloader-violet);
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0%,
+  50%,
+  100% {
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  25% {
+    transform: scale(0.6);
+    filter: blur(3px);
+  }
+  75% {
+    filter: blur(3px);
+    transform: scale(1.4);
+  }
+}

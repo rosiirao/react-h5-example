@@ -7,9 +7,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  height: 100%;
+}
 body {
   color: #333;
   background: #fff;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Set dark mode styles */
@@ -23,4 +28,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#root {
+  height: 100%;
 }
