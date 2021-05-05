@@ -8,7 +8,21 @@
   &>section {
     flex: auto 1 1;
   }
+
+  &>header {
+    animation: 1s fadeInUp ease-out forwards;
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
+
 
 .ptr__content {
   background-color: lightblue;
@@ -17,4 +31,14 @@
   flex-direction: column;
   overflow: auto;
   scroll-behavior: smooth;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ptr__layout {
+    background-color: #666;
+  }
+
+  .ptr__content {
+    background-color: teal;
+  }
 }

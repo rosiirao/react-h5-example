@@ -50,7 +50,7 @@ type TouchPtrProps = React.PropsWithChildren<{
 export default (props: TouchPtrProps) => {
   const {ptrThreshold = 0, loader, preloader = <Preloader />} = props;
   const threshold = Math.min(Math.max(100, ptrThreshold), 160);
-  const {onTouch, move, cancelled, touches} = useTouch(threshold);
+  const {onTouch, move, cancelled} = useTouch(threshold);
 
   const ptrStatus = usePtr({move, cancelled}, threshold, loader);
 
