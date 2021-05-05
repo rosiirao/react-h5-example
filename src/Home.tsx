@@ -10,6 +10,8 @@ import Nav from './components/ViewNav';
 import './Home.scss';
 import {useEffect} from 'react';
 
+import './Home.scss';
+
 export default function Home() {
   const [mode, toggle] = useTheme();
   useEffect(() => {
