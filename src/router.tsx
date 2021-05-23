@@ -4,6 +4,7 @@ import Transform from './pages/Transform';
 import WheelScroll from './pages/WheelScroll';
 import DragToSort from './pages/DragToSort';
 import ErrorHandle from './pages/ErrorHandle';
+import Toast from './pages/Toast';
 
 const routers = [
   {
@@ -31,6 +32,10 @@ const routers = [
   {
     path: '/error-handle',
     component: () => <ErrorHandle />,
+  },
+  {
+    path: '/toast',
+    component: () => <Toast />,
   },
 ];
 
