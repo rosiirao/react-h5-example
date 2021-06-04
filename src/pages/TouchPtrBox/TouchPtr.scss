@@ -10,6 +10,10 @@
   }
 
   &>header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: thistle;
     animation: 1s fadeInUp ease-out forwards;
     opacity: 0;
     transform: translateY(3rem);
