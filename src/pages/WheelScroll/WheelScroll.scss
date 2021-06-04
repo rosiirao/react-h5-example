@@ -3,7 +3,7 @@
   height: 50vh;
   border: 1px dotted gray;
   position: absolute;
-  top: 25vh;
+  top: calc(25vh - env(safe-area-inset-bottom) - env(safe-area-inset-bottom));
   left: 25vw;
   overflow: scroll;
   // touch-action: none;

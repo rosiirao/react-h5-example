@@ -9,6 +9,7 @@ import TouchPtrBox from './pages/TouchPtrBox';
 import QRUtil from './pages/QRUtil';
 import PrintPages from './pages/PrintPages';
 import ColorScheme from './pages/ColorScheme';
+import CSSEnv from './pages/CSSEnv';
 
 const routers = [
   {
@@ -62,6 +63,11 @@ const routers = [
   {
     path: '/print-pages',
     component: () => <PrintPages />,
+  },
+  {
+    path: '/css-env',
+    component: <CSSEnv />,
+    title: 'css env() function',
   },
 ];
 

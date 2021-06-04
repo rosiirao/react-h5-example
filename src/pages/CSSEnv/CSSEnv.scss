@@ -1,0 +1,25 @@
+.css-env__outer {
+  max-width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: cadetblue;
+  padding: // safe-area-inset-* will set by user-agent, see effect in some mobile browser, eg. safari
+    env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
+  // padding: 0;
+  border-radius: 0.5rem;
+  border: 1px solid burlywood;
+  overflow: auto;
+}
+
+.css-env {
+  background-color: darkcyan;
+  min-height: 5rem;
+  outline: 1px solid steelblue;
+
+  &>:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
