@@ -54,6 +54,14 @@ $breakpoint-desktop: 1024px;
   color: white;
 }
 
+.App-nav {
+  text-align: left;
+
+  .App-link {
+    border: 1px solid orange;
+  }
+}
+
 .App-link {
   color: #61dafb;
 }

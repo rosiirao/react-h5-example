@@ -1,7 +1,8 @@
 import logo from './logo.svg';
-import './App.scss';
-import router from './router';
+import routes from './router';
 import {Link} from 'react-router-dom';
+
+import './App.scss';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
       <div>
         <h2>Demo list</h2>
         <ul style={{textAlign: 'left'}}>
-          {router
+          {routes
             .filter(({path}) => path !== '/')
             .map(({path, label}) => (
               <li key={path}>

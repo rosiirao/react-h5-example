@@ -6,10 +6,18 @@
     background: h#{s}l(40, 13%, 18%);
     position: sticky;
     top: 0;
-    z-index: 1;
   }
 
   &>* {
     z-index: 0;
   }
+
+  &>main {
+    position: relative;
+  }
+}
+
+.view-root {
+  min-height: 100%;
+  background-color: hsl(140, 90%, 90%);
 }
