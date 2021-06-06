@@ -1,0 +1,50 @@
+.view-fade {
+  position: absolute;
+  inset: 0 0 auto 0;
+  --view-transition-duration: 3000ms;
+  --view-bg-transform: translate(-60%, 0) scale(0.9, 0.9);
+}
+
+.view-fade-left-enter,
+.view-fade-right-exit.view-fade-right-exit-active {
+  transform: translateX(100%);
+  opacity: 0.4;
+}
+
+.view-fade-right-exit,
+.view-fade-left-enter.view-fade-left-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.view-fade-right-exit.view-fade-right-exit-active,
+.view-fade-left-enter.view-fade-left-enter-active {
+  transition:
+    transform var(--view-transition-duration) ease-in,
+    opacity var(--view-transition-duration) ease-in;
+}
+
+.view-fade-left-enter,
+.view-fade-right-exit {
+  z-index: 1;
+  // position: absolute;
+}
+
+.view-fade-left-exit,
+.view-fade-right-enter.view-fade-right-enter-active {
+  transform: translate(0, 0) scale(1, 1);
+  opacity: 1;
+}
+
+.view-fade-right-enter,
+.view-fade-left-exit.view-fade-left-exit-active {
+  opacity: 0.4;
+  transform: var(--view-bg-transform);
+}
+
+.view-fade-right-enter.view-fade-right-enter-active,
+.view-fade-left-exit.view-fade-left-exit-active {
+  transition:
+    transform var(--view-transition-duration) ease-in,
+    opacity var(--view-transition-duration) ease-in;
+}

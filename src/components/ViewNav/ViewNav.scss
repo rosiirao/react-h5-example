@@ -1,0 +1,18 @@
+.view-nav {
+  &> :where(ul, ol) {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.2em;
+  }
+
+  &--horizontal>:where(ul, ol) {
+    flex-direction: row;
+  }
+
+  .view-link {
+    display: inline-block;
+    padding: 0.2em 0.5em;
+  }
+}
