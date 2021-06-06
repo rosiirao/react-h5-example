@@ -5,7 +5,7 @@ const DroppedFilesForm = (
   dropFilesForm: React.ForwardedRef<HTMLFormElement>
 ) => {
   return (
-    <p>
+    <article>
       <form
         className="dropped-files__form"
         method="post"
@@ -17,11 +17,10 @@ const DroppedFilesForm = (
           <li key={name}>{name}</li>
         ))}
       </ul>
-    </p>
+    </article>
   );
 };
 
-// getName(DroppedFilesForm) === 'DroppedFilesForm';
 DroppedFilesForm.displayName = 'DroppedFilesForm';
 
 export default forwardRef(DroppedFilesForm);
