@@ -1,0 +1,61 @@
+.color-examples {
+  display: flex;
+  padding: 0.5em;
+  gap: 0.5em;
+}
+
+.color-examples>* {
+  &::before {
+    content: ' ';
+    float: left;
+    padding-top: 100%;
+  }
+
+  flex: 1;
+
+  border: 1px solid var(--surface4);
+  border-radius: 50%;
+}
+
+
+.color-examples>* {
+  display: flex;
+  place-items: center;
+  justify-content: center;
+}
+
+.brand {
+  background: var(--brand);
+}
+
+.text-1 {
+  background: var(--text1);
+}
+
+.text-2 {
+  background: var(--text2);
+}
+
+.surface-1 {
+  background: var(--surface1);
+}
+
+.surface-2 {
+  background: var(--surface2);
+}
+
+.surface-3 {
+  background: var(--surface3);
+}
+
+.surface-4 {
+  background: var(--surface4);
+}
+
+.surface-shadow {
+  background: h#{s}l(var(--surface-shadow));
+}
+
+.shadow-strength {
+  background: h#{s}l(var(--surface-shadow), var(--shadow-strength));
+}

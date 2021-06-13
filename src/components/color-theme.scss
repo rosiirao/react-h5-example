@@ -1,0 +1,87 @@
+* {
+  // --brand: hsl(40, 100%, 50%);
+  --brand-hue: 40;
+  --brand-saturation: 100%;
+  --brand-lightness: 50%;
+
+  --brand-light: hsl(var(--brand-hue), var(--brand-saturation), var(--brand-lightness));
+  --brand-dark: hsl(var(--brand-hue), calc(var(--brand-saturation)/2), calc(var(--brand-lightness)/2));
+  --brand-dim: hsl(var(--brand-hue), calc(var(--brand-saturation)/1.25), calc(var(--brand-lightness)/1.25));
+
+  // text2 is not quite as dark as the 1st color, which is good as it's a secondary color
+  // and it's also much less saturated.
+  --text1-light: hsl(var(--brand-hue), var(--brand-saturation), 10%);
+  --text2-light: hsl(var(--brand-hue), 30%, 30%);
+  --text1-dark: hsl(var(--brand-hue), 15%, 85%);
+  --text2-dark: hsl(var(--brand-hue), 5%, 65%);
+  --text1-dim: hsl(var(--brand-hue), 15%, 75%);
+  --text2-dim: hsl(var(--brand-hue), 10%, 61%);
+
+  // backgrounds, borders and other decorative surfaces that text sits upon or within
+  // 4 surface colors were created for interactive moments like borders :hover or :focus
+  --surface1-light: hsl(var(--brand-hue), 25%, 90%);
+  --surface2-light: hsl(var(--brand-hue), 20%, 99%);
+  --surface3-light: hsl(var(--brand-hue), 20%, 92%);
+  --surface4-light: hsl(var(--brand-hue), 20%, 85%);
+  --surface1-dark: hsl(var(--brand-hue), 10%, 10%);
+  --surface2-dark: hsl(var(--brand-hue), 10%, 15%);
+  --surface3-dark: hsl(var(--brand-hue), 5%, 20%);
+  --surface4-dark: hsl(var(--brand-hue), 5%, 25%);
+  --surface1-dim: hsl(var(--brand-hue), 10%, 20%);
+  --surface2-dim: hsl(var(--brand-hue), 10%, 25%);
+  --surface3-dim: hsl(var(--brand-hue), 5%, 30%);
+  --surface4-dim: hsl(var(--brand-hue), 5%, 35%);
+
+  --surface-shadow-light: var(--brand-hue), 10%, 20%;
+  --shadow-strength-light: .2;
+  --surface-shadow-dark: var(--brand-hue), 50%, 3%;
+  --shadow-strength-dark: .8;
+  --surface-shadow-dim: var(--brand-hue), 30%, 14%;
+  --shadow-strength-dim: .2;
+}
+
+@mixin useScheme($scheme) {
+  color-scheme: $scheme;
+  --brand: var(--brand-#{$scheme});
+
+  --text1: var(--text1-#{$scheme});
+  --text2: var(--text2-#{$scheme});
+
+  --surface1: var(--surface1-#{$scheme});
+  --surface2: var(--surface2-#{$scheme});
+  --surface3: var(--surface3-#{$scheme});
+  --surface4: var(--surface4-#{$scheme});
+
+  --surface-shadow: var(--surface-shadow-#{$scheme});
+  --shadow-strength: var(--shadow-strength-#{$scheme});
+}
+
+:root {
+  @include useScheme('light');
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    @include useScheme('dark');
+  }
+}
+
+[color-scheme="light"] {
+  @include useScheme('light');
+}
+
+[color-scheme="dark"] {
+  @include useScheme('dark');
+}
+
+[color-scheme="dim"] {
+  @include useScheme('dim');
+}
+
+.rad-shadow {
+  box-shadow: 0 2.8px 2.2px h#{s}l(var(--surface-shadow), calc(var(--shadow-strength) + .03)),
+  0 6.7px 5.3px h#{s}l(var(--surface-shadow), calc(var(--shadow-strength) + .01)),
+  0 12.5px 10px h#{s}l(var(--surface-shadow), calc(var(--shadow-strength) + .02)),
+  0 41.8px 33.4px h#{s}l(var(--surface-shadow), calc(var(--shadow-strength) + .03)),
+  0 100px 80px h#{s}l(var(--surface-shadow), var(--shadow-strength));
+}

@@ -8,6 +8,7 @@ import Toast from './pages/Toast';
 import TouchPtrBox from './pages/TouchPtrBox';
 import QRUtil from './pages/QRUtil';
 import PrintPages from './pages/PrintPages';
+import ColorScheme from './pages/ColorScheme';
 
 const routers = [
   {
@@ -48,6 +49,10 @@ const routers = [
   {
     path: '/qr',
     component: () => <QRUtil />,
+  },
+  {
+    path: '/color-theme',
+    component: () => <ColorScheme />,
   },
   {
     path: '/touch-pull-to-refresh',
