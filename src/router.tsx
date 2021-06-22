@@ -6,11 +6,17 @@ import DragToSort from './pages/DragToSort';
 import ErrorHandle from './pages/ErrorHandle';
 import Toast from './pages/Toast';
 import TouchPtrBox from './pages/TouchPtrBox';
+import QRUtil from './pages/QRUtil';
 
 const routers = [
   {
     exact: true,
     path: '/',
+    component: () => <App />,
+  },
+  {
+    exact: true,
+    path: '/index.html',
     component: () => <App />,
   },
   {
@@ -37,6 +43,10 @@ const routers = [
   {
     path: '/toast',
     component: () => <Toast />,
+  },
+  {
+    path: '/qr',
+    component: () => <QRUtil />,
   },
   {
     path: '/touch-pull-to-refresh',

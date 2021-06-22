@@ -1,0 +1,62 @@
+.qr-reader,
+.qr-writer {
+  display: grid;
+  grid-template-columns: max-content;
+  gap: 0.5rem;
+
+  margin: 0.5rem;
+
+  >* {
+    margin: 0 0.5em;
+  }
+
+  label {
+    white-space: nowrap;
+
+    >* {
+      margin: 0 0.5em;
+    }
+
+    >textarea {
+      vertical-align: middle;
+    }
+  }
+
+  button {
+    max-width: 10em;
+  }
+
+  :invalid {
+    border: 1px solid hsl(0, 60%, 60%);
+    box-shadow: 0 0 2px 2px hsl(0, 60%, 60%);
+  }
+}
+
+.json-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  padding: 0 1em;
+
+  >* {
+    flex: 1;
+    max-width: 48ch;
+    min-width: 25ch;
+    overflow: hidden;
+    word-wrap: break-;
+    white-space: pre-wrap;
+    word-break: break-all;
+
+    padding: 0.5em;
+    border: 1px solid;
+    border-radius: 5%;
+  }
+}
+
+.qr-image {
+  vertical-align: top;
+}
+
+.qr-text {
+  white-space: pre-wrap;
+}
