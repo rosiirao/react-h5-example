@@ -28,32 +28,35 @@ const getTouches = (evt: React.TouchEvent<Element>, end?: true) => {
   return ongoingTouches;
 };
 
-const setTouchesAction = (
-  touches: Touches
-): React.SetStateAction<Touches | undefined> => prev => {
-  if (prev === undefined) return touches;
-  const next: Touches = [...prev];
-  for (const {identifier, pageY, end} of touches) {
-    const i = next.findIndex(p => p.identifier === identifier);
-    if (i === -1) {
-      next.push({
+const setTouchesAction =
+  (touches: Touches): React.SetStateAction<Touches | undefined> =>
+  prev => {
+    if (prev === undefined) return touches;
+    const next: Touches = [...prev];
+    for (const {identifier, pageY, end} of touches) {
+      const i = next.findIndex(p => p.identifier === identifier);
+      if (i === -1) {
+        next.push({
+          identifier,
+          pageY,
+          offsetY: 0,
+          ...(end ? {end} : undefined),
+        });
+        break;
+      }
+      const {offsetY} = next[i];
+      next[i] = {
         identifier,
         pageY,
-        offsetY: 0,
+        offsetY: Math.max(
+          0,
+          Math.min(Infinity, offsetY + pageY - next[i].pageY)
+        ),
         ...(end ? {end} : undefined),
-      });
-      break;
+      };
     }
-    const {offsetY} = next[i];
-    next[i] = {
-      identifier,
-      pageY,
-      offsetY: Math.max(0, Math.min(Infinity, offsetY + pageY - next[i].pageY)),
-      ...(end ? {end} : undefined),
-    };
-  }
-  return next;
-};
+    return next;
+  };
 
 const useTouchesAction = () =>
   useCallback(touches => setTouchesAction(touches), []);

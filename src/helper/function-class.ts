@@ -2,12 +2,12 @@
  * Some explanation to Class based on Function syntax.
  */
 
-const OneClass = (function (this: {name: string}) {
+const OneClass = function (this: {name: string}) {
   if (new.target === undefined) {
     throw new Error('You must use new to call OneClass');
   }
   this.name = 'one';
-} as unknown) as {new (): typeof OneClass};
+} as unknown as {new (): typeof OneClass};
 
 declare class OtherClass /* extends Error  */ {
   // constructor(message: string);
