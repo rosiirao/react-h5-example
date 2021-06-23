@@ -78,11 +78,8 @@ export default function WheelEvent() {
     // setTransformStyle(([scale, rotate]: StyleProp) => [(scale + event.deltaY), rotate]);
   };
 
-  const [
-    [scale, rotate],
-    transformStyle,
-    setTransformStyle,
-  ] = useTransformStyle([1, 0]);
+  const [[scale, rotate], transformStyle, setTransformStyle] =
+    useTransformStyle([1, 0]);
 
   const debounceSetScale = useMemo(
     () =>
@@ -139,11 +136,10 @@ export default function WheelEvent() {
   > = event => {
     debounceSetRotate(Number(event.currentTarget.value));
   };
-  const onChangeScale: React.EventHandler<
-    React.ChangeEvent<HTMLInputElement>
-  > = event => {
-    debounceSetScale(Number(event.currentTarget.value));
-  };
+  const onChangeScale: React.EventHandler<React.ChangeEvent<HTMLInputElement>> =
+    event => {
+      debounceSetScale(Number(event.currentTarget.value));
+    };
   // useLayoutEffect(() => {
   //   const wheelBoxDiv = wheelBox.current;
   //   const onScroll = (event: Event) => {
