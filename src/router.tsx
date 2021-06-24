@@ -7,6 +7,7 @@ import ErrorHandle from './pages/ErrorHandle';
 import Toast from './pages/Toast';
 import TouchPtrBox from './pages/TouchPtrBox';
 import QRUtil from './pages/QRUtil';
+import PrintPages from './pages/PrintPages';
 
 const routers = [
   {
@@ -51,6 +52,10 @@ const routers = [
   {
     path: '/touch-pull-to-refresh',
     component: () => <TouchPtrBox />,
+  },
+  {
+    path: '/print-pages',
+    component: () => <PrintPages />,
   },
 ];
 

@@ -1,0 +1,29 @@
+.print-pages {
+  // Intentionally set a scroll zone, and can print it with pagination.
+  position: absolute;
+  top: 3em;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.print-zone {
+  display: none;
+}
+
+@media print {
+
+  button {
+    display: none;
+  }
+
+  .print-pages {
+    display: none;
+  }
+
+  .print-zone {
+    display: block;
+    position: static;
+  }
+}
