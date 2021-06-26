@@ -1,11 +1,15 @@
-.layout {
-  height: 100%;
+#root {
   display: grid;
   grid-template-rows: max-content minmax(0, 1fr);
 
   &>header {
+    background: h#{s}l(193, 13%, 18%);
     position: sticky;
     top: 0;
     z-index: 1;
+  }
+
+  &>* {
+    z-index: 0;
   }
 }
