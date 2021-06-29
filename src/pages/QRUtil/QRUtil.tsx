@@ -53,8 +53,8 @@ export default () => {
 
   return (
     <>
-      <h2>QR code utilizations</h2>
       <article>
+        <h2>QR code utilizations</h2>
         <QRReader updateCodeImage={setQRImgSrc} updateCodeText={setQRText} />
         <QRWriter updateCodeImage={setQRImgSrc} />
 
