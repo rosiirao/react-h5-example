@@ -20,10 +20,6 @@ $breakpoint-desktop: 1024px;
   display: inline;
 }
 
-nav {
-  line-height: 1.4;
-}
-
 *,
 *::after,
 *::before {
@@ -33,6 +29,7 @@ nav {
 .App {
   text-align: center;
   height: 100%;
+  display: grid;
 }
 
 .App-logo {

@@ -19,20 +19,19 @@ function App() {
         >
           Learn React
         </a>
-        <nav style={{textAlign: 'left'}}>
-          <ul>
-            {router
-              .filter(({path}) => path !== '/')
-              .map(({path, label}) => (
-                <li key={path}>
-                  <Link className="App-link" to={path}>
-                    {label ?? path}
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </nav>
       </header>
+      <div>
+        <h2>Demo list</h2>
+        <ul style={{textAlign: 'left'}}>
+          {router
+            .filter(({path}) => path !== '/')
+            .map(({path, label}) => (
+              <li key={path}>
+                <Link to={path}>{label ?? path}</Link>
+              </li>
+            ))}
+        </ul>
+      </div>
     </div>
   );
 }
