@@ -39,7 +39,7 @@ export default function ViewNav(props: {
                 }
                 linkClass={props.linkClass}
                 path={path}
-                label={label ?? path}
+                label={label ?? path.replace(/^\//, '')}
               ></ViewLink>
             </li>
           ))}

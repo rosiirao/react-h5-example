@@ -8,15 +8,27 @@ import ViewTransition from './components/ViewTransition';
 import Nav from './components/ViewNav';
 
 import './Home.scss';
+import {useEffect} from 'react';
 
 export default function Home() {
   const [mode, toggle] = useTheme();
+  useEffect(() => {
+    const currentScheme = document.body.getAttribute('color-scheme');
+    if (mode === Theme[currentScheme as keyof typeof Theme]) return;
+    if (mode === undefined) {
+      document.body.removeAttribute('color-scheme');
+      return;
+    }
+    document.body.setAttribute('color-scheme', Theme[mode]);
+  }, [mode]);
+
+  const theme = mode !== undefined ? Theme[mode] : 'auto';
   return (
     <ThemeContext.Provider value={[mode, toggle]}>
       <Router>
-        <header>
+        <header color-scheme="dark">
           <ThemeSwitch
-            on={mode === Theme.light}
+            theme={theme}
             toggle={() => {
               toggle(mode);
             }}

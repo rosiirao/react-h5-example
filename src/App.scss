@@ -16,9 +16,9 @@ $breakpoint-desktop: 1024px;
   }
 }
 
-@include media(">tablet") {
-  display: inline;
-}
+// @include media(">tablet") {
+  //   display: inline;
+  // }
 
 *,
 *::after,

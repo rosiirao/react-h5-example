@@ -1,4 +1,4 @@
-@import './components/color-theme';
+@import './components/color-scheme';
 
 body {
   margin: 0;
@@ -18,19 +18,11 @@ body {
   display: grid;
   grid-template-columns: 1fr;
 
-  color: #333;
-  background: #fff;
+  color: var(--text1);
+  background-color: var(--surface1);
   overflow: hidden auto;
 
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-}
-
-/* Set dark mode styles */
-@media (prefers-color-scheme: dark) {
-  body {
-    color: #fff;
-    background: #333;
-  }
 }
 
 code {
@@ -42,13 +34,22 @@ button {
   line-height: m#{a}x(1.4em, 18px); // more height for touch friendly
 }
 
-#root {
-  height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+a:link {
+  color: var(--link-text);
+  text-decoration: none;
 }
 
-/* ios safari detect */
-@supports (-webkit-touch-callout: none) {
-  #root {
-    height: -webkit-fill-available;
-  }
+a:visited {
+  color: hsl(var(--link-hue), 80%, 70%);
+}
+
+a:hover {
+  background: var(--surface2);
+  text-decoration: underline;
+}
+
+a:active {
+  color: var(--link-visited-text);
+  background: var(--surface3);
+  text-decoration: underline;
 }

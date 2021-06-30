@@ -1,9 +1,11 @@
+@use "../header";
+
 .view-nav {
   &> :where(ul, ol) {
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    padding: 0 0.2em;
+    display: grid;
+    grid-auto-flow: column;
     gap: 0.2em;
   }
 
@@ -14,5 +16,24 @@
   .view-link {
     display: inline-block;
     padding: 0.2em 0.5em;
+  }
+}
+
+@media screen and (max-width: header.$width-l) {
+  .view-nav> :where(ul, ol) {
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+
+@media screen and (max-width: header.$width-m) {
+  .view-nav> :where(ul, ol) {
+    grid-template-rows: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: header.$width-s) {
+  .view-nav> :where(ul, ol) {
+    grid-template-rows: repeat(4, auto);
   }
 }
