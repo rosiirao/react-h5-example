@@ -1,23 +1,63 @@
+@use './components/header';
+
+@mixin responsiveHeader($height) {
+  #root {
+    margin-top: $height;
+
+    &>header {
+      height: $height;
+    }
+  }
+
+  #root {
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - $height);
+  }
+
+  /* ios safari detect */
+  @supports (-webkit-touch-callout: none) {
+    #root {
+      height: calc(-webkit-fill-available - $height);
+    }
+  }
+}
+
 #root {
+  min-width: 22.5rem;
+}
+
+@include responsiveHeader(header.$height-xs);
+
+@media screen and (max-width: header.$width-l) {
+  @include responsiveHeader(header.$height-s);
+}
+
+@media screen and (max-width: header.$width-m) {
+  @include responsiveHeader(header.$height-m);
+}
+
+@media screen and (max-width: header.$width-s) {
+  @include responsiveHeader(header.$height-l);
+}
+
+#root {
+  position: relative;
   display: grid;
   grid-template-rows: max-content minmax(0, 1fr);
 
   &>header {
-    background: h#{s}l(40, 13%, 18%);
-    position: sticky;
-    top: 0;
+    background: var(--surface1);
+    color: var(--text1);
+    position: fixed;
+    inset: 0;
+    z-index: 1;
   }
 
   &>* {
     z-index: 0;
   }
 
-  &>main {
-    position: relative;
-  }
 }
 
 .view-root {
   min-height: 100%;
-  background-color: hsl(140, 90%, 90%);
 }

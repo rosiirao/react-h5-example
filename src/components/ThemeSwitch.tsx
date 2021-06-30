@@ -1,20 +1,18 @@
 /**
  * Theme switch button
- * @param {on, toggle}
+ * @param {theme, toggle}
  * @returns
  */
-export default (function ThemeSwitch({on, toggle}) {
+export default (function ThemeSwitch({theme, toggle}) {
   return typeof toggle === 'function' ? (
-    <button
-      onClick={toggle}
-      role="switch"
-      type="button"
-      aria-checked={(on = on === true)}
-    >
-      {on === true ? 'on' : 'off'}
-    </button>
+    <label>
+      Theme:
+      <button onClick={toggle} role="switch" type="button">
+        {theme}
+      </button>
+    </label>
   ) : null;
 } as React.FC<{
-  on: boolean;
+  theme: string;
   toggle?: React.MouseEventHandler<HTMLButtonElement>;
 }>);

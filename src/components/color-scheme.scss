@@ -1,6 +1,6 @@
 * {
   // --brand: hsl(40, 100%, 50%);
-  --brand-hue: 40;
+  --brand-hue: 140;
   --brand-saturation: 100%;
   --brand-lightness: 50%;
 
@@ -16,6 +16,15 @@
   --text2-dark: hsl(var(--brand-hue), 5%, 65%);
   --text1-dim: hsl(var(--brand-hue), 15%, 75%);
   --text2-dim: hsl(var(--brand-hue), 10%, 61%);
+
+  // color: hsl(240, 100%, 47%);
+  --link-hue: 193;
+  --link-light: hsl(var(--link-hue), 100%, 45%);
+  --link-visited-light: hsl(var(--link-hue), 80%, 35%);
+  --link-dark: hsl(var(--link-hue), 40%, 80%);
+  --link-visited-dark: hsl(var(--link-hue), 30%, 70%);
+  --link-dim: hsl(var(--link-hue), 40%, 60%);
+  --link-visited-dim: hsl(var(--link-hue), 40%, 50%);
 
   // backgrounds, borders and other decorative surfaces that text sits upon or within
   // 4 surface colors were created for interactive moments like borders :hover or :focus
@@ -46,6 +55,9 @@
 
   --text1: var(--text1-#{$scheme});
   --text2: var(--text2-#{$scheme});
+
+  --link-text: var(--link-#{$scheme});
+  --link-visited-text: var(--link-visited-#{$scheme});
 
   --surface1: var(--surface1-#{$scheme});
   --surface2: var(--surface2-#{$scheme});

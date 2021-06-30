@@ -19,11 +19,12 @@ const routers = [
   {
     exact: true,
     path: '/index.html',
+    label: 'home',
     component: () => <App />,
   },
   {
     path: '/flex-box',
-    label: '/flex-box',
+    label: 'flex-box',
     component: <FlexBox />,
   },
   {
@@ -51,7 +52,7 @@ const routers = [
     component: () => <QRUtil />,
   },
   {
-    path: '/color-theme',
+    path: '/color-scheme',
     component: () => <ColorScheme />,
   },
   {
