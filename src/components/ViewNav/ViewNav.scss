@@ -1,11 +1,72 @@
 @use "../header";
 
 .view-nav {
-  &> :where(ul, ol) {
-    list-style: none;
-    padding: 0 0.2em;
+  display: flex;
+  height: 2rem;
+  overflow: hidden;
+
+  >:where(ul, ol) {
+    flex-grow: 1;
+    // grid-column: 1;
+    // max-width: calc(100% - 5rem);
+
     display: grid;
     grid-auto-flow: column;
+    overflow: hidden;
+  }
+
+  .view-nav__more {
+    text-align: center;
+    min-width: 4em;
+    grid-column-start: -1;
+  }
+
+  .view-nav__collapse {
+    display: none;
+    grid-column: 1;
+  }
+
+  &:target {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    position: fixed;
+    height: 100%;
+
+    >:where(ul, ol) {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(auto-fit, minmax(auto, 8em));
+
+      .view-link {
+        white-space: pre-wrap;
+      }
+    }
+
+    .view-nav__more {
+      display: none;
+    }
+
+    .view-nav__collapse {
+      display: block;
+      flex-grow: 1;
+    }
+  }
+}
+
+.view-nav {
+  >* {
+    background: var(--surface1);
+  }
+
+  >.view-nav__collapse {
+    opacity: 0.6;
+  }
+}
+
+.view-nav {
+  &> :where(ul, ol) {
+    list-style: none;
+    margin: 0;
+    padding: 0 0.2em;
     gap: 0.2em;
   }
 
@@ -15,25 +76,26 @@
 
   .view-link {
     display: inline-block;
+    white-space: nowrap;
     padding: 0.2em 0.5em;
   }
 }
 
-@media screen and (max-width: header.$width-l) {
-  .view-nav> :where(ul, ol) {
-    grid-template-rows: repeat(2, 1fr);
-  }
-}
+// @media screen and (max-width: header.$width-l) {
+//   .view-nav> :where(ul, ol) {
+//     grid-template-rows: repeat(2, 1fr);
+//   }
+// }
 
 
-@media screen and (max-width: header.$width-m) {
-  .view-nav> :where(ul, ol) {
-    grid-template-rows: repeat(3, 1fr);
-  }
-}
+// @media screen and (max-width: header.$width-m) {
+//   .view-nav> :where(ul, ol) {
+//     grid-template-rows: repeat(3, 1fr);
+//   }
+// }
 
-@media screen and (max-width: header.$width-s) {
-  .view-nav> :where(ul, ol) {
-    grid-template-rows: repeat(4, auto);
-  }
-}
+// @media screen and (max-width: header.$width-s) {
+//   .view-nav> :where(ul, ol) {
+//     grid-template-rows: repeat(4, auto);
+//   }
+// }
