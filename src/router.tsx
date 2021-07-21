@@ -10,6 +10,7 @@ import QRUtil from './pages/QRUtil';
 import PrintPages from './pages/PrintPages';
 import ColorScheme from './pages/ColorScheme';
 import CSSEnv from './pages/CSSEnv';
+import AuthForm from './pages/AuthForm';
 
 const routers = [
   {
@@ -68,6 +69,11 @@ const routers = [
     path: '/css-env',
     component: <CSSEnv />,
     title: 'css env() function',
+  },
+  {
+    path: '/auth-form',
+    component: <AuthForm />,
+    title: 'Auth Form',
   },
 ];
 
