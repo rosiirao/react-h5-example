@@ -1,27 +1,55 @@
 import {ClipboardEventHandler, FormEventHandler, useCallback} from 'react';
 import './Form.scss';
 
-let inMemoryToken: {jwt_token: string; jwt_token_exp: string};
+import authApi from '../../api/auth';
 
-const loginApi = 'https://dev.notacup.com:3443/auth/login';
-const authApi = 'https://dev.notacup.com:3443/auth/who';
-const login = async (form: HTMLFormElement) => {
-  const response = await fetch(loginApi, {
-    method: 'post',
-    credentials: 'include',
-    mode: 'cors',
-    body: new URLSearchParams(
-      new FormData(form) as unknown as Record<string, string>
-    ),
-  });
-  const {jwt_token, jwt_token_exp} = await response.json();
-  inMemoryToken = {jwt_token, jwt_token_exp};
-};
+const {register, login, user} = authApi;
 
 export default () => {
-  const handleSubmit = useCallback(e => {
+  const formAction: Record<string, <T>(form: FormData) => Promise<T | void>> = {
+    register: async form => {
+      const [, error] = await register(form);
+      if (error !== undefined) {
+        console.error(error);
+        alert(`register failed: ${error.message}`);
+        return;
+      }
+      alert('register succeed!');
+    },
+    login: async form => {
+      const [, error] = await login(form);
+      if (error !== undefined) {
+        console.error(error);
+        alert(`login failed: ${error.message}`);
+        return;
+      }
+      alert('login succeed!');
+    },
+    user: async () => {
+      const [u, error] = await user();
+      if (error !== undefined) {
+        alert(`can't get user info: ${error.message}`);
+        return;
+      }
+      if (u === undefined) {
+        alert("You haven't login!");
+        return;
+      }
+      alert(`You are ${u}`);
+    },
+  };
+
+  const handleSubmit = useCallback<FormEventHandler>(e => {
     e.preventDefault();
     window.navigator.vibrate(5000);
+    const form = e.target as HTMLFormElement;
+    const name = form.getAttribute('name') ?? '';
+    const action = formAction[name];
+    if (action === undefined) {
+      alert(`Undefined submit action to form : "${name}"`);
+      return;
+    }
+    action(new FormData(form));
   }, []);
 
   const handlePaste: ClipboardEventHandler = useCallback(e => {
@@ -29,35 +57,10 @@ export default () => {
     console.log(e.clipboardData);
   }, []);
 
-  const handleLogin: FormEventHandler = useCallback(async e => {
-    e.preventDefault();
-    login(e.target as HTMLFormElement)
-      .then(() => {
-        alert('login success!');
-      })
-      .catch(e => {
-        console.error(e);
-        alert('login failed!');
-      });
-  }, []);
-
-  const handleAuth: FormEventHandler = useCallback(async e => {
-    e.preventDefault();
-    const response = await fetch(authApi, {
-      headers: {
-        Authorization: 'Bearer ' + inMemoryToken?.jwt_token,
-      },
-    }).catch(() => {
-      alert('Please Login First!');
-    });
-    if (response === undefined) return;
-    alert(await response.text());
-  }, []);
-
   return (
     <div style={{display: 'flex', flexWrap: 'wrap'}}>
       <form
-        action=""
+        name="register"
         method="get"
         className="form-example"
         onSubmit={handleSubmit}
@@ -77,14 +80,26 @@ export default () => {
           <input type="email" name="email" required onPaste={handlePaste} />
         </div>
         <div className="form-example">
-          <input type="submit" value="Subscribe!" />
+          <label htmlFor="password">
+            Password:
+            <input
+              id="password"
+              type="password"
+              name="password"
+              required
+              onPaste={handlePaste}
+            />
+          </label>
+        </div>
+        <div className="form-example">
+          <input type="submit" value="Register!" />
         </div>
       </form>
       <form
-        action=""
+        name="login"
         method="post"
         className="form-example"
-        onSubmit={handleLogin}
+        onSubmit={handleSubmit}
       >
         <h2>Login</h2>
         <div className="form-example">
@@ -106,9 +121,9 @@ export default () => {
       </form>
       <form
         className="form-example"
-        action=""
+        name="user"
         method="get"
-        onSubmit={handleAuth}
+        onSubmit={handleSubmit}
       >
         <h2>Who am i</h2>
         <div className="form-example">
