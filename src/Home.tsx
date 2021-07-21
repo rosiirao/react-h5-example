@@ -27,13 +27,14 @@ export default function Home() {
     <ThemeContext.Provider value={[mode, toggle]}>
       <Router>
         <header color-scheme="dark">
-          <ThemeSwitch
-            theme={theme}
-            toggle={() => {
-              toggle(mode);
-            }}
-          />
-          <Nav horizontal={true} routes={routes} />
+          <Nav horizontal={true} routes={routes}>
+            <ThemeSwitch
+              theme={theme}
+              toggle={() => {
+                toggle(mode);
+              }}
+            />
+          </Nav>
         </header>
         <main>
           {routes.map(r => (

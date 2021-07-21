@@ -11,19 +11,22 @@
   // text2 is not quite as dark as the 1st color, which is good as it's a secondary color
   // and it's also much less saturated.
   --text1-light: hsl(var(--brand-hue), var(--brand-saturation), 10%);
-  --text2-light: hsl(var(--brand-hue), 30%, 30%);
   --text1-dark: hsl(var(--brand-hue), 15%, 85%);
-  --text2-dark: hsl(var(--brand-hue), 5%, 65%);
   --text1-dim: hsl(var(--brand-hue), 15%, 75%);
+  --text2-light: hsl(var(--brand-hue), 30%, 30%);
+  --text2-dark: hsl(var(--brand-hue), 5%, 65%);
   --text2-dim: hsl(var(--brand-hue), 10%, 61%);
 
   // color: hsl(240, 100%, 47%);
   --link-hue: 193;
-  --link-light: hsl(var(--link-hue), 100%, 45%);
-  --link-visited-light: hsl(var(--link-hue), 80%, 35%);
+  --link-light: hsl(var(--link-hue), 90%, 45%);
   --link-dark: hsl(var(--link-hue), 40%, 80%);
-  --link-visited-dark: hsl(var(--link-hue), 30%, 70%);
   --link-dim: hsl(var(--link-hue), 40%, 60%);
+  --link2-light: hsl(var(--link-hue), 100%, 55%);
+  --link2-dark: hsl(var(--link-hue), 50%, 70%);
+  --link2-dim: hsl(var(--link-hue), 50%, 50%);
+  --link-visited-light: hsl(var(--link-hue), 80%, 35%);
+  --link-visited-dark: hsl(var(--link-hue), 30%, 70%);
   --link-visited-dim: hsl(var(--link-hue), 40%, 50%);
 
   // backgrounds, borders and other decorative surfaces that text sits upon or within
@@ -57,6 +60,7 @@
   --text2: var(--text2-#{$scheme});
 
   --link-text: var(--link-#{$scheme});
+  --link-text2: var(--link2-#{$scheme});
   --link-visited-text: var(--link-visited-#{$scheme});
 
   --surface1: var(--surface1-#{$scheme});

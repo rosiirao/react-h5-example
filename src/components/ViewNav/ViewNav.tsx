@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import React from 'react';
 import {matchPath, useLocation} from 'react-router-dom';
 import ViewLink from './ViewLink';
 
@@ -7,24 +8,28 @@ import './ViewNav.scss';
 /**
  * set location.state.page number, and ViewTransition determine animating next page by the number
  */
-export default function ViewNav(props: {
-  horizontal?: boolean;
-  routes: {path: string; label?: string}[];
-  navClass?: string | Array<string> | Record<string, boolean>;
-  linkClass?: string | Array<string> | Record<string, boolean>;
-  linkOthers?: Record<string, unknown>;
-}) {
-  const {horizontal = false, routes} = props;
+export default function ViewNav(
+  props: React.PropsWithChildren<{
+    horizontal?: boolean;
+    routes: {path: string; label?: string}[];
+    navClass?: string | Array<string> | Record<string, boolean>;
+    linkClass?: string | Array<string> | Record<string, boolean>;
+    linkOthers?: Record<string, unknown>;
+  }>
+) {
+  const {horizontal = false, routes, children} = props;
   const location = useLocation();
 
   return (
     <nav
+      id="view-nav"
       className={classNames(
         'view-nav',
         {'view-nav--horizontal': horizontal},
         props.navClass
       )}
     >
+      {children}
       <ul>
         {routes
           .filter(({path}) => path !== '/')
@@ -44,6 +49,10 @@ export default function ViewNav(props: {
             </li>
           ))}
       </ul>
+      <a href="#view-nav" className="view-nav__more">
+        ...
+      </a>
+      <a href="#" className="view-nav__collapse" />
     </nav>
   );
 }
