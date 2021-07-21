@@ -1,0 +1,14 @@
+form {
+  display: flow-root;
+  padding: 1em;
+  padding-bottom: 0em;
+  margin-bottom: 1em;
+
+  >* {
+    margin-bottom: 1em;
+  }
+
+  :invalid {
+    border: 1px solid hsl(0, 60%, 60%);
+  }
+}
