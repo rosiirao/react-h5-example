@@ -21,6 +21,7 @@ export default function ViewLink(props: {
         matchPath(l.pathname, {path, exact: true}) === null
           ? {
               ...l,
+              hash: '#',
               pathname: path,
               state: {...l.state, page: (l.state?.page ?? 0) + 1},
             }

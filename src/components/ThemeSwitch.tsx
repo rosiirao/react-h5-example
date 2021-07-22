@@ -5,7 +5,14 @@
  */
 export default (function ThemeSwitch({theme, toggle}) {
   return typeof toggle === 'function' ? (
-    <label style={{whiteSpace: 'nowrap'}}>
+    <label
+      style={{
+        whiteSpace: 'nowrap',
+        display: 'flex',
+        alignItems: 'center',
+        minWidth: '6.8em',
+      }}
+    >
       Theme:
       <button onClick={toggle} role="switch" type="button">
         {theme}

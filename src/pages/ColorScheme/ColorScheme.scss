@@ -2,6 +2,7 @@
   display: grid;
   // grid-auto-flow: column;
   grid-template-columns: repeat(auto-fit, minmax(auto, 8em));
+  justify-content: space-evenly;
 
   // display: flex;
   // flex-wrap: wrap;

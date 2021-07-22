@@ -10,9 +10,10 @@
     // grid-column: 1;
     // max-width: calc(100% - 5rem);
 
+    z-index: -1;
     display: grid;
     grid-auto-flow: column;
-    overflow: hidden;
+    overflow: auto;
   }
 
   .view-nav__more {
@@ -24,20 +25,45 @@
   .view-nav__collapse {
     display: none;
     grid-column: 1;
+
+    z-index: -2;
+    position: fixed;
+
+    // outline: 2px solid limegreen;
+    // outline-offset: -5px;
   }
 
   &:target {
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: header.$height auto 1fr;
     position: fixed;
-    height: 100%;
+    height: auto;
+    overflow: visible;
 
+    // outline: 2px solid olive;
+    // outline-offset: -8px;
+
+    /** expand the nav list */
     >:where(ul, ol) {
       grid-auto-flow: row;
+      justify-content: space-evenly;
       grid-template-columns: repeat(auto-fit, minmax(auto, 8em));
+
+      // animation: nav-down 0.5s  delay iteration-count direction fill-mode;
+      animation: slideDown 0.5s ease-in;
 
       .view-link {
         white-space: pre-wrap;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+
+      to {
+        transform: translateY(0%);
       }
     }
 
@@ -47,18 +73,32 @@
 
     .view-nav__collapse {
       display: block;
-      flex-grow: 1;
+      // flex-grow: 1;
+      height: 100vh;
+      width: 100%;
+
+
+      animation: fadeIn 0.5s ease-in;
+      background-color: hsla(var(--surface1-hsl), 0.6);
     }
+
+
+    @keyframes fadeIn {
+      from {
+        background-color: transparent;
+      }
+
+      to {
+        background-color: hsla(var(--surface1-hsl), 0.6);
+      }
+    }
+
   }
 }
 
 .view-nav {
-  >* {
+  >:not(.view-nav__collapse) {
     background: var(--surface1);
-  }
-
-  >.view-nav__collapse {
-    opacity: 0.6;
   }
 }
 
@@ -80,22 +120,3 @@
     padding: 0.2em 0.5em;
   }
 }
-
-// @media screen and (max-width: header.$width-l) {
-//   .view-nav> :where(ul, ol) {
-//     grid-template-rows: repeat(2, 1fr);
-//   }
-// }
-
-
-// @media screen and (max-width: header.$width-m) {
-//   .view-nav> :where(ul, ol) {
-//     grid-template-rows: repeat(3, 1fr);
-//   }
-// }
-
-// @media screen and (max-width: header.$width-s) {
-//   .view-nav> :where(ul, ol) {
-//     grid-template-rows: repeat(4, auto);
-//   }
-// }

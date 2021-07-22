@@ -4,45 +4,45 @@
   --brand-saturation: 100%;
   --brand-lightness: 50%;
 
-  --brand-light: hsl(var(--brand-hue), var(--brand-saturation), var(--brand-lightness));
-  --brand-dark: hsl(var(--brand-hue), calc(var(--brand-saturation)/2), calc(var(--brand-lightness)/2));
-  --brand-dim: hsl(var(--brand-hue), calc(var(--brand-saturation)/1.25), calc(var(--brand-lightness)/1.25));
+  --brand-light: var(--brand-hue), var(--brand-saturation), var(--brand-lightness);
+  --brand-dark: var(--brand-hue), calc(var(--brand-saturation)/2), calc(var(--brand-lightness)/2);
+  --brand-dim: var(--brand-hue), calc(var(--brand-saturation)/1.25), calc(var(--brand-lightness)/1.25);
 
   // text2 is not quite as dark as the 1st color, which is good as it's a secondary color
   // and it's also much less saturated.
-  --text1-light: hsl(var(--brand-hue), var(--brand-saturation), 10%);
-  --text1-dark: hsl(var(--brand-hue), 15%, 85%);
-  --text1-dim: hsl(var(--brand-hue), 15%, 75%);
-  --text2-light: hsl(var(--brand-hue), 30%, 30%);
-  --text2-dark: hsl(var(--brand-hue), 5%, 65%);
-  --text2-dim: hsl(var(--brand-hue), 10%, 61%);
+  --text1-light: var(--brand-hue), var(--brand-saturation), 10%;
+  --text1-dark: var(--brand-hue), 15%, 85%;
+  --text1-dim: var(--brand-hue), 15%, 75%;
+  --text2-light: var(--brand-hue), 30%, 30%;
+  --text2-dark: var(--brand-hue), 5%, 65%;
+  --text2-dim: var(--brand-hue), 10%, 61%;
 
   // color: hsl(240, 100%, 47%);
   --link-hue: 193;
-  --link-light: hsl(var(--link-hue), 90%, 45%);
-  --link-dark: hsl(var(--link-hue), 40%, 80%);
-  --link-dim: hsl(var(--link-hue), 40%, 60%);
-  --link2-light: hsl(var(--link-hue), 100%, 55%);
-  --link2-dark: hsl(var(--link-hue), 50%, 70%);
-  --link2-dim: hsl(var(--link-hue), 50%, 50%);
-  --link-visited-light: hsl(var(--link-hue), 80%, 35%);
-  --link-visited-dark: hsl(var(--link-hue), 30%, 70%);
-  --link-visited-dim: hsl(var(--link-hue), 40%, 50%);
+  --link-light: var(--link-hue), 90%, 45%;
+  --link-dark: var(--link-hue), 40%, 80%;
+  --link-dim: var(--link-hue), 40%, 60%;
+  --link2-light: var(--link-hue), 100%, 55%;
+  --link2-dark: var(--link-hue), 50%, 70%;
+  --link2-dim: var(--link-hue), 50%, 50%;
+  --link-visited-light: var(--link-hue), 80%, 35%;
+  --link-visited-dark: var(--link-hue), 30%, 70%;
+  --link-visited-dim: var(--link-hue), 40%, 50%;
 
   // backgrounds, borders and other decorative surfaces that text sits upon or within
   // 4 surface colors were created for interactive moments like borders :hover or :focus
-  --surface1-light: hsl(var(--brand-hue), 25%, 90%);
-  --surface2-light: hsl(var(--brand-hue), 20%, 99%);
-  --surface3-light: hsl(var(--brand-hue), 20%, 92%);
-  --surface4-light: hsl(var(--brand-hue), 20%, 85%);
-  --surface1-dark: hsl(var(--brand-hue), 10%, 10%);
-  --surface2-dark: hsl(var(--brand-hue), 10%, 15%);
-  --surface3-dark: hsl(var(--brand-hue), 5%, 20%);
-  --surface4-dark: hsl(var(--brand-hue), 5%, 25%);
-  --surface1-dim: hsl(var(--brand-hue), 10%, 20%);
-  --surface2-dim: hsl(var(--brand-hue), 10%, 25%);
-  --surface3-dim: hsl(var(--brand-hue), 5%, 30%);
-  --surface4-dim: hsl(var(--brand-hue), 5%, 35%);
+  --surface1-light: var(--brand-hue), 25%, 90%;
+  --surface2-light: var(--brand-hue), 20%, 99%;
+  --surface3-light: var(--brand-hue), 20%, 92%;
+  --surface4-light: var(--brand-hue), 20%, 85%;
+  --surface1-dark: var(--brand-hue), 10%, 10%;
+  --surface2-dark: var(--brand-hue), 10%, 15%;
+  --surface3-dark: var(--brand-hue), 5%, 20%;
+  --surface4-dark: var(--brand-hue), 5%, 25%;
+  --surface1-dim: var(--brand-hue), 10%, 20%;
+  --surface2-dim: var(--brand-hue), 10%, 25%;
+  --surface3-dim: var(--brand-hue), 5%, 30%;
+  --surface4-dim: var(--brand-hue), 5%, 35%;
 
   --surface-shadow-light: var(--brand-hue), 10%, 20%;
   --shadow-strength-light: .2;
@@ -54,22 +54,40 @@
 
 @mixin useScheme($scheme) {
   color-scheme: $scheme;
-  --brand: var(--brand-#{$scheme});
+  --brand-hsl: var(--brand-#{$scheme});
 
-  --text1: var(--text1-#{$scheme});
-  --text2: var(--text2-#{$scheme});
+  --text1-hsl: var(--text1-#{$scheme});
+  --text2-hsl: var(--text2-#{$scheme});
 
-  --link-text: var(--link-#{$scheme});
-  --link-text2: var(--link2-#{$scheme});
-  --link-visited-text: var(--link-visited-#{$scheme});
+  --link-text-hsl: var(--link-#{$scheme});
+  --link-text2-hsl: var(--link2-#{$scheme});
+  --link-visited-text-hsl: var(--link-visited-#{$scheme});
 
-  --surface1: var(--surface1-#{$scheme});
-  --surface2: var(--surface2-#{$scheme});
-  --surface3: var(--surface3-#{$scheme});
-  --surface4: var(--surface4-#{$scheme});
+  --surface1-hsl: var(--surface1-#{$scheme});
+  --surface2-hsl: var(--surface2-#{$scheme});
+  --surface3-hsl: var(--surface3-#{$scheme});
+  --surface4-hsl: var(--surface4-#{$scheme});
 
-  --surface-shadow: var(--surface-shadow-#{$scheme});
-  --shadow-strength: var(--shadow-strength-#{$scheme});
+  --surface-shadow-hsl: var(--surface-shadow-#{$scheme});
+  --shadow-strength-hsl: var(--shadow-strength-#{$scheme});
+
+  // color value
+  --brand: hsl(var(--brand-hsl));
+
+  --text1: hsl(var(--text1-hsl));
+  --text2: hsl(var(--text2-hsl));
+
+  --link-text: hsl(var(--link-hsl));
+  --link-text2: hsl(var(--link2-hsl));
+  --link-visited-text: hsl(var(--link-visited-hsl));
+
+  --surface1: hsl(var(--surface1-hsl));
+  --surface2: hsl(var(--surface2-hsl));
+  --surface3: hsl(var(--surface3-hsl));
+  --surface4: hsl(var(--surface4-hsl));
+
+  --surface-shadow: hsl(var(--surface-shadow-hsl));
+  --shadow-strength: hsl(var(--shadow-strength-hsl));
 }
 
 :root {
