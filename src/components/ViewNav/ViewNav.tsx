@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import React from 'react';
 import {matchPath, useLocation} from 'react-router-dom';
 import ViewLink from './ViewLink';
 
@@ -49,10 +48,10 @@ export default function ViewNav(
             </li>
           ))}
       </ul>
+      <a href="#" className="view-nav__collapse" />
       <a href="#view-nav" className="view-nav__more">
         ...
       </a>
-      <a href="#" className="view-nav__collapse" />
     </nav>
   );
 }

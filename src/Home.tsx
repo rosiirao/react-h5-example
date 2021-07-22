@@ -25,7 +25,7 @@ export default function Home() {
   const theme = mode !== undefined ? Theme[mode] : 'auto';
   return (
     <ThemeContext.Provider value={[mode, toggle]}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <header color-scheme="dark">
           <Nav horizontal={true} routes={routes}>
             <ThemeSwitch
