@@ -1,3 +1,4 @@
+import createPromise from '../helper/promise-util';
 import {debounce} from './utils';
 
 describe('utils test', () => {
@@ -14,10 +15,9 @@ describe('utils test', () => {
     const d = debounce(fn, 100);
     let start = 1;
     for (let t = 0; t < times; t++) {
-      let r: (value: number) => void;
-      const p = new Promise<number>(resolve => (r = resolve)); // reset p and r
+      const [p, ok] = createPromise<number>();
       for (let c = 0; c < count; c++) {
-        d(c + start).then(dr => (typeof dr === 'number' ? r(dr) : undefined));
+        d(c + start).then(dr => (typeof dr === 'number' ? ok(dr) : undefined));
       }
       // jest.advanceTimersByTime(50);
       expect(fn).toBeCalledTimes(t);
@@ -43,10 +43,9 @@ describe('utils test', () => {
     const d = debounce(fn, 100, {onceInQueue: true});
     let start = 1;
     for (let t = 0; t < times; t++) {
-      let r: (value: number) => void;
-      const p = new Promise<number>(resolve => (r = resolve)); // reset p and r
+      const [p, ok] = createPromise<number>();
       for (let c = 0; c < count; c++) {
-        d(c + start).then(dr => (typeof dr === 'number' ? r(dr) : undefined));
+        d(c + start).then(dr => (typeof dr === 'number' ? ok(dr) : undefined));
         // jest.advanceTimersByTime(50);
       }
       expect(fn).toBeCalledTimes(t);

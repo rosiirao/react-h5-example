@@ -1,9 +1,5 @@
-export type ThenArg<T> = T extends PromiseLike<infer U>
-  ? U
-  : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends (...args: any[]) => PromiseLike<infer V>
-  ? V
-  : T;
+import createPromise from '../helper/promise-util';
+import {ThenArg} from '../helper/types.util';
 
 /**
  *
@@ -33,7 +29,7 @@ export const debounce = <
     if (_timer !== undefined) _r();
 
     // current call promise
-    _p = new Promise(resolve => (_r = resolve));
+    [_p, _r] = createPromise<R | void>();
 
     if (_timer !== undefined) {
       if (!onceInQueue) {
