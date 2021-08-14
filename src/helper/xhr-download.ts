@@ -1,17 +1,6 @@
 import createPromise from '../helper/promise-util';
-class XhrError extends Error {
-  status;
-  xhr;
-  constructor(
-    status: number,
-    xhr: XMLHttpRequest,
-    ...errorParam: Parameters<ErrorConstructor>
-  ) {
-    super(...errorParam);
-    this.status = status;
-    this.xhr = xhr;
-  }
-}
+
+import {HttpError} from './http-util';
 
 /**
  * Blob to String
@@ -49,12 +38,12 @@ export const fetchBlob = async (
   xhr.onreadystatechange = async function () {
     if (xhr.readyState === 4) {
       if (xhr.status !== 200) {
-        err(new XhrError(xhr.status, xhr, '转换 excel 表格服务响应异常'));
+        err(new HttpError(xhr.status, xhr, '转换 excel 表格服务响应异常'));
         return;
       }
       if (xhr.responseType !== 'blob') {
         err(
-          new XhrError(
+          new HttpError(
             200,
             xhr,
             `转换 excel 表格服务返回数据格式不匹配， 返回类型为 ${xhr.responseType}`
@@ -68,11 +57,11 @@ export const fetchBlob = async (
         const response = await stringBlob(xhr.response.text);
         try {
           const {msg = response} = JSON.parse(response);
-          err(new XhrError(200, xhr, `转换 excel 表格服务响应错误 : ${msg}`));
+          err(new HttpError(200, xhr, `转换 excel 表格服务响应错误 : ${msg}`));
         } catch (e) {
           console.error(e);
           err(
-            new XhrError(
+            new HttpError(
               200,
               xhr,
               `转换 excel 表格服务返回数据格式不匹配， 返回值为 ${response}`
