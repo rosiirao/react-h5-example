@@ -2,7 +2,7 @@ export type Element<T> = T extends (infer U)[] ? U : never;
 
 export type ThenArg<T> = T extends PromiseLike<infer U>
   ? U
-  : T extends (...args: unknown[]) => PromiseLike<infer V>
+  : T extends (...args: never[]) => PromiseLike<infer V>
   ? V
   : T;
 
