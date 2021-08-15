@@ -1,7 +1,7 @@
 import {ClipboardEventHandler, FormEventHandler, useCallback} from 'react';
 import './Form.scss';
 
-import authApi from '../../api/auth';
+import authApi from '../../api/auth.api';
 
 const {register, login, user} = authApi;
 
@@ -128,6 +128,16 @@ export default () => {
         <h2>Who am i</h2>
         <div className="form-example">
           <input type="submit" value="Check!" />
+        </div>
+      </form>
+      <form
+        className="form-example"
+        name="logout"
+        method="get"
+        onSubmit={handleSubmit}
+      >
+        <div className="form-example">
+          <input type="submit" value="Logout!" />
         </div>
       </form>
     </div>

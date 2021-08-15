@@ -1,5 +1,6 @@
-import {Result} from '../helper/http-util';
-import {HttpError, wrap, unwrap, wrapCompose} from '../helper/http-util';
+import {HttpError} from '../helper/http-util';
+import {Result} from '../helper/promise-util';
+import {wrap, unwrap} from '../helper/promise-util';
 
 const authApi = '/api/auth';
 const loginApi = `${authApi}/login`;
@@ -68,24 +69,25 @@ const user = async () => {
   }).then(response => unwrap(response).text());
 };
 
-const refreshToken = async () => {
+const refreshToken = async (): Promise<typeof inMemoryToken> => {
   return fetchApi(refreshTokenApi).then(response => unwrap(response).json());
 };
 
 const validateToken = async () => {
-  const isExpire = (jwtTokenExp: string) => Boolean(jwtTokenExp);
+  const isExpire = (jwtTokenExp: string) =>
+    Number(new Date(jwtTokenExp)) - Number(new Date()) < 60_000; // if less than 1min, then refresh token
   if (inMemoryToken === undefined || isExpire(inMemoryToken.jwt_token_exp)) {
-    inMemoryToken = await refreshToken().catch();
+    [inMemoryToken] = await wrap(refreshToken)();
     if (inMemoryToken === undefined) {
       return;
     }
   }
-  return inMemoryToken.jwt_token_exp;
+  return inMemoryToken.jwt_token;
 };
 
 export default {
-  login: wrapCompose(login),
-  logout: wrapCompose(logout),
-  register: wrapCompose(register),
-  user: wrapCompose(user),
+  login: wrap(login),
+  logout: wrap(logout),
+  register: wrap(register),
+  user: wrap(user),
 };
