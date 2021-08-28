@@ -5,5 +5,5 @@ export default () => {
   if (count > 0) {
     throw new Error('A intentional Error');
   }
-  return <div onClick={() => setCount(1)}> click to error!</div>;
+  return <div onClick={() => setCount(1)}> Click to throw an error!</div>;
 };
