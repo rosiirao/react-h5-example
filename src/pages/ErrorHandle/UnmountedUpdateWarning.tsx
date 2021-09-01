@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 const useMounted = (debug?: string) => {
   const mounted = useRef(false);
@@ -8,7 +8,7 @@ const useMounted = (debug?: string) => {
       if (debug) console.log(`${debug} Unmounted`);
       mounted.current = false;
     };
-  }, []);
+  }, [debug]);
   return mounted;
 };
 

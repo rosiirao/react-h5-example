@@ -48,7 +48,11 @@ export default function ViewNav(
             </li>
           ))}
       </ul>
-      <a href="#" className="view-nav__collapse" />
+      <button
+        className="view-nav__collapse"
+        onClick={() => document.location.assign(location.pathname + '#')}
+      ></button>
+      {/* <a href="#" className="view-nav__collapse"></a> */}
       <a href="#view-nav" className="view-nav__more">
         ...
       </a>

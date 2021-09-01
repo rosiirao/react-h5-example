@@ -76,7 +76,7 @@ export default function ViewTransition(
     hide();
     if (ref.current === null) return;
     // delete ref.current.dataset['top'];
-  }, []);
+  }, [hide]);
 
   const transitionClass = `view-fade-${back ? 'right' : 'left'}`;
   const animate = back ? props.backAnimate ?? false : props.animate ?? true;

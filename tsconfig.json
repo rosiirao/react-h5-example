@@ -5,7 +5,7 @@
     "outDir": "build",
     "esModuleInterop": true,
     "jsx": "react-jsx", //'react-jsxdev' for development environment
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
     "noPropertyAccessFromIndexSignature": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -14,7 +14,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts"]
 }

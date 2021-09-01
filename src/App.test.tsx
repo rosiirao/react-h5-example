@@ -1,9 +1,9 @@
 import {render} from '@testing-library/react';
 import {BrowserRouter} from 'react-router-dom';
 import App from './App';
+import api from './api';
 
 jest.mock('./api');
-import api from './api';
 
 test('renders learn react link', () => {
   const {getByText} = render(

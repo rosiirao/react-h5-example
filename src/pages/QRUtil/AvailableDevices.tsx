@@ -13,7 +13,7 @@ const useAvailableDevices = () => {
         console.error(e);
         alert(e);
       });
-  }, [setDevices]);
+  }, [devicesWait, setDevices]);
   return devices;
 };
 

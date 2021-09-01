@@ -1,4 +1,5 @@
-import {debounce} from './utils';
+import createPromise from './promise-util';
+import {debounce} from './debounce';
 
 describe('utils test', () => {
   beforeAll(() => {
@@ -8,16 +9,13 @@ describe('utils test', () => {
     [2, 9],
     [2, 20],
   ])('debounce %i output %i', async (times, count) => {
-    const fn: (i: number) => number = jest
-      .fn()
-      .mockImplementation((a: number) => a);
-    const d = debounce(fn, 100);
+    const fn = jest.fn<number, [number]>().mockImplementation((a: number) => a);
+    const d = debounce<number, typeof fn>(fn, 100);
     let start = 1;
     for (let t = 0; t < times; t++) {
-      let r: (value: number) => void;
-      const p = new Promise<number>(resolve => (r = resolve)); // reset p and r
+      const [p, ok] = createPromise<number>();
       for (let c = 0; c < count; c++) {
-        d(c + start).then(dr => (typeof dr === 'number' ? r(dr) : undefined));
+        d(c + start).then(dr => (typeof dr === 'number' ? ok(dr) : undefined));
       }
       // jest.advanceTimersByTime(50);
       expect(fn).toBeCalledTimes(t);
@@ -43,10 +41,9 @@ describe('utils test', () => {
     const d = debounce(fn, 100, {onceInQueue: true});
     let start = 1;
     for (let t = 0; t < times; t++) {
-      let r: (value: number) => void;
-      const p = new Promise<number>(resolve => (r = resolve)); // reset p and r
+      const [p, ok] = createPromise<number>();
       for (let c = 0; c < count; c++) {
-        d(c + start).then(dr => (typeof dr === 'number' ? r(dr) : undefined));
+        d(c + start).then(dr => (typeof dr === 'number' ? ok(dr) : undefined));
         // jest.advanceTimersByTime(50);
       }
       expect(fn).toBeCalledTimes(t);

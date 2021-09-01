@@ -11,6 +11,7 @@ const usePtr = (
   loader?: (...arg: unknown[]) => Promise<unknown>
 ) => {
   const [ptrStatus, ptrAction] = usePtrStatus();
+
   useEffect(() => {
     if (cancelled) {
       ptrAction('cancel');
@@ -28,16 +29,17 @@ const usePtr = (
       ptrAction('release');
       return;
     }
-  }, [move, cancelled]);
+  }, [move, cancelled, ptrAction, threshold]);
+
   useEffect(() => {
-    if (ptrStatus.state === PtrStatus.Loading) {
-      if (loader)
-        loader().then(() => {
+    if (ptrStatus.state !== PtrStatus.Loading) return;
+    loader
+      ? loader().then(() => {
           ptrAction('done');
-        });
-      else ptrAction('done');
-    }
-  }, [ptrStatus]);
+        })
+      : ptrAction('done');
+  }, [ptrStatus, loader, ptrAction]);
+
   return ptrStatus;
 };
 
@@ -59,7 +61,7 @@ export default (props: TouchPtrProps) => {
       if (ptrStatus.state === PtrStatus.Loading) return;
       onTouch(evt);
     },
-    [ptrStatus]
+    [ptrStatus, onTouch]
   );
 
   const touchOffset = ptrStatus.state === PtrStatus.Loading ? 0 : move;

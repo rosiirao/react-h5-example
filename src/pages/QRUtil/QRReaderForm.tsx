@@ -53,18 +53,21 @@ export default function QRReader(props: Props) {
     [setSelectedDevice]
   );
 
-  const onChangeFile = useCallback(e => {
-    const fileList = e.target.files;
-    let file;
-    for (let i = 0; i < fileList.length; i++) {
-      if (fileList[i].type.match(/^image\//)) {
-        file = fileList[i];
-        updateCodeImage(URL.createObjectURL(file));
-        break;
+  const onChangeFile = useCallback(
+    e => {
+      const fileList = e.target.files;
+      let file;
+      for (let i = 0; i < fileList.length; i++) {
+        if (fileList[i].type.match(/^image\//)) {
+          file = fileList[i];
+          updateCodeImage(URL.createObjectURL(file));
+          break;
+        }
       }
-    }
-  }, []);
-  const [encoding, setEncoding] = useState('utf-8');
+    },
+    [updateCodeImage]
+  );
+  const [, setEncoding] = useState('utf-8');
   const onSelectEncoding = useCallback(
     e => {
       setEncoding(e.target.value);
@@ -120,7 +123,7 @@ export default function QRReader(props: Props) {
         console.error(e);
         alert(e);
       });
-  }, [selectedDevice, encoding]);
+  }, [selectedDevice, updateCodeText]);
 
   useEffect(() => {
     return () => {

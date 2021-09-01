@@ -45,7 +45,7 @@ const _Window = (props: React.PropsWithChildren<{}>, ref: React.Ref<Toast>) => {
     : null;
 };
 
-const Toast = forwardRef<Toast, React.PropsWithChildren<{}>>(_Window);
+const ToastMain = forwardRef<Toast, React.PropsWithChildren<{}>>(_Window);
 
 export default () => {
   const dialogRef = useRef<Toast>(null);
@@ -61,11 +61,11 @@ export default () => {
       <button type="button" onClick={dialog.open}>
         open modal dialog
       </button>
-      <Toast ref={dialogRef}>
+      <ToastMain ref={dialogRef}>
         <div>Hello Modal!</div>
         <div>Hello Modal!</div>
         <div>Hello Modal!</div>
-      </Toast>
+      </ToastMain>
     </React.Fragment>
   );
 };

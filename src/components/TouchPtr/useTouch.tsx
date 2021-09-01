@@ -58,15 +58,11 @@ const setTouchesAction =
     return next;
   };
 
-const useTouchesAction = () =>
-  useCallback(touches => setTouchesAction(touches), []);
-
 const useTouch = (threshold: number) => {
   const [touches, setTouches] = useState<Touches>();
   const [move, setMove] = useState(0);
   const [cancelled, setCancelled] = useState(false);
 
-  const setTouchesAction = useTouchesAction();
   const onTouch: TouchEventHandler = useCallback(evt => {
     if (evt.currentTarget.scrollTop > 0 || evt.type === 'touchcancel') {
       setTouches(undefined);

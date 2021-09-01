@@ -1,3 +1,8 @@
 {
-  "extends": "./node_modules/gts/"
+  "extends": ["react-app", "react-app/jest", "./node_modules/gts/"],
+  "env": {
+    "serviceworker": true,
+    "worker": true
+  },
+  "rules": {"import/no-anonymous-default-export": "off"}
 }

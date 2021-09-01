@@ -92,53 +92,56 @@ export default function DragToSort() {
     []
   );
 
-  const handleDrop: React.DragEventHandler<HTMLElement> = useCallback(ev => {
-    ev.preventDefault();
-    ev.stopPropagation(); // do this to prevent the redirect
+  const handleDrop: React.DragEventHandler<HTMLElement> = useCallback(
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation(); // do this to prevent the redirect
 
-    const target = ev.target as HTMLDivElement; // dragged avatar
-    const currentTarget = ev.currentTarget as HTMLUListElement; // dragover zone
-    setLog(prevLog => {
-      return [`drop files: ${ev.dataTransfer.files.length}`, ...prevLog].splice(
-        0,
-        8
-      );
-    });
-    const draggedId = ev.dataTransfer.getData('text');
-    // on drop can get files by ev.dataTransfer.files interface.
-    const files = ev.dataTransfer.files;
-    if (files.length > 0) {
-      let dropFilesInput = droppedFilesForm.current!
-        .children[0] as HTMLInputElement;
-      if (dropFilesInput === undefined) {
-        dropFilesInput = document.createElement('input');
-        dropFilesInput.setAttribute('type', 'file');
-        dropFilesInput.setAttribute('multiple', 'true');
-        droppedFilesForm.current?.appendChild(dropFilesInput);
+      const target = ev.target as HTMLDivElement; // dragged avatar
+      const currentTarget = ev.currentTarget as HTMLUListElement; // dragover zone
+      setLog(prevLog => {
+        return [
+          `drop files: ${ev.dataTransfer.files.length}`,
+          ...prevLog,
+        ].splice(0, 8);
+      });
+      const draggedId = ev.dataTransfer.getData('text');
+      // on drop can get files by ev.dataTransfer.files interface.
+      const files = ev.dataTransfer.files;
+      if (files.length > 0) {
+        let dropFilesInput = droppedFilesForm.current!
+          .children[0] as HTMLInputElement;
+        if (dropFilesInput === undefined) {
+          dropFilesInput = document.createElement('input');
+          dropFilesInput.setAttribute('type', 'file');
+          dropFilesInput.setAttribute('multiple', 'true');
+          droppedFilesForm.current?.appendChild(dropFilesInput);
+        }
+        dropFilesInput.files = files;
+        const fileState = [];
+        for (const {name} of files) {
+          fileState.push({index: droppingId, name});
+        }
+        setFiles(fileState);
       }
-      dropFilesInput.files = files;
-      const fileState = [];
-      for (const {name} of files) {
-        fileState.push({index: droppingId, name});
-      }
-      setFiles(fileState);
-    }
-    setDragState(({droppingId}) => ({
-      isDragover: false,
-      droppingId: NaN,
-      droppedId: {
-        insertId: droppingId,
-        draggedId: Number(draggedId),
-      },
-    }));
-    setLog(prevLog => {
-      return [
-        logTarget(currentTarget, 'handleDrop:currentTarget'),
-        logTarget(target, 'handleDrop:dragOvertTarget'),
-        ...prevLog,
-      ].splice(0, 8);
-    });
-  }, []);
+      setDragState(({droppingId}) => ({
+        isDragover: false,
+        droppingId: NaN,
+        droppedId: {
+          insertId: droppingId,
+          draggedId: Number(draggedId),
+        },
+      }));
+      setLog(prevLog => {
+        return [
+          logTarget(currentTarget, 'handleDrop:currentTarget'),
+          logTarget(target, 'handleDrop:dragOvertTarget'),
+          ...prevLog,
+        ].splice(0, 8);
+      });
+    },
+    [droppingId]
+  );
 
   const handleDragStart: React.DragEventHandler<HTMLElement> = useCallback(
     ev => {

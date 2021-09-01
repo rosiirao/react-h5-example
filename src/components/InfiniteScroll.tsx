@@ -14,20 +14,23 @@ export default (
   const {children, loader} = props;
   const preloader = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
-  const prepareLoading = useCallback(() => setLoading(true), [loader]);
+  const prepareLoading = useCallback(() => setLoading(true), [setLoading]);
   const dataLoader = useMemo(
-    () => (loader !== undefined ? debounce(loader, 200) : undefined),
+    () =>
+      loader !== undefined
+        ? debounce<void, typeof loader>(loader, 200)
+        : undefined,
     [loader]
   );
   useEffect(() => {
     if (preloader.current === null) return;
+    const preloaderEl = preloader.current;
     intersectionObserver.observe(preloader.current);
     // then listen the intersection event to loader
-    preloader.current.addEventListener(Intersection_Event, prepareLoading);
+    preloaderEl.addEventListener(Intersection_Event, prepareLoading);
     return () => {
       intersectionObserver.disconnect();
-      if (preloader.current === null) return;
-      preloader.current.removeEventListener(Intersection_Event, prepareLoading);
+      preloaderEl.removeEventListener(Intersection_Event, prepareLoading);
     };
   }, [preloader, prepareLoading]);
 

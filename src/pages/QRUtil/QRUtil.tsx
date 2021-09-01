@@ -63,6 +63,7 @@ export default () => {
             <h4>Code And Text</h4>
             <p>
               <img
+                alt="QR Code"
                 src={qrImgSrc}
                 ref={img}
                 onLoad={onLoadImage}

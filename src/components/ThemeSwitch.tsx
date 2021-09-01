@@ -14,7 +14,7 @@ export default (function ThemeSwitch({theme, toggle}) {
       }}
     >
       Theme:
-      <button onClick={toggle} role="switch" type="button">
+      <button onClick={toggle} type="button">
         {theme}
       </button>
     </label>
