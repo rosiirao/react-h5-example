@@ -15,9 +15,14 @@ describe('promise util', () => {
     }
     ok(input_result);
     const [result, error] = await promiseResult();
+    const error_pair =
+      error !== undefined
+        ? input_error instanceof Error
+          ? [error, input_error]
+          : [error.message, String(input_error)]
+        : undefined;
+    expect(error_pair?.[0]).toBe(error_pair?.[1]);
     if (error !== undefined) {
-      if (input_error instanceof Error) expect(error).toBe(input_error);
-      else expect(error.message).toBe(String(input_error));
       return;
     }
     expect(result).toBe(input_result);
@@ -39,13 +44,29 @@ describe('promise util', () => {
     };
     const promiseResult = wrap(doPromise);
 
-    const [result, error] = await promiseResult(input_result, input_error);
+    const result = await promiseResult(input_result, input_error);
+    const [value, error] = result;
+    const error_pair =
+      error !== undefined
+        ? input_error instanceof Error
+          ? [error, input_error]
+          : [error.message, String(input_error)]
+        : undefined;
+    expect(() => {
+      if (error !== undefined) result.expect('re-thrown error with old error ');
+      else throw new Error('re-thrown error undefined');
+    }).toThrowError('re-thrown error');
+    expect(error_pair?.[0]).toBe(error_pair?.[1]);
     if (error !== undefined) {
-      if (input_error instanceof Error) expect(error).toBe(input_error);
-      else expect(error.message).toBe(String(input_error));
       return;
     }
-    expect(result).toBe(input_result);
+    expect(() => {}).not.toThrowError();
+    expect(() =>
+      input_error === undefined ? result.expect() : undefined
+    ).not.toThrowError();
+    expect(input_error === undefined ? result.expect() : undefined).toBe(value);
+
+    expect(value).toBe(input_result);
   });
 });
 
