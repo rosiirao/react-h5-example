@@ -1,5 +1,5 @@
 {
   "jestrunner.jestCommand": "npm run test --",
-  "jest.jestCommandLine": "npm run test --",
-  "jestrunner.jestPath": "npm run test --"
+  "jestrunner.jestPath": "./node_modules/.bin/react-scripts",
+  "jestrunner.debugOptions": {"args": ["test", "--no-cache"]}
 }
