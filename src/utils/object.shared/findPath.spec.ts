@@ -1,4 +1,4 @@
-import {findPath, Predicate} from './findPath';
+import {findPath, findAllPath, Predicate} from './findPath';
 
 describe('object shared function test', () => {
   it('findPath(object, predicate) works', () => {
@@ -8,7 +8,13 @@ describe('object shared function test', () => {
       b: {c: 2, d: {e: 'to find indicated'}},
       c: {c: 2, d: 'repeated find here', findOnKey: 'any string here'},
       d: {d1: '', secondFindOnKey: 'any'},
+      e: {
+        e1: ['any string here', {ee1: 'to find in array'}, 'to find in array'],
+      },
+      f: {f1: {}, f2: 'to find in array'},
     };
+
+    const tArray = ['any string here', {t}];
 
     function findStr(str: string) {
       return function (this: {value: string} | void, val: unknown) {
@@ -36,6 +42,22 @@ describe('object shared function test', () => {
     expect(findPath(t, findOnKey('never appear') as Predicate<string>)).toEqual(
       []
     );
+
+    expect(findPath(t, findStr('in array'))).toEqual(['e', 'e1', 1, 'ee1']);
+    expect(findPath(tArray, findStr('in array'))).toEqual([
+      1,
+      't',
+      'e',
+      'e1',
+      1,
+      'ee1',
+    ]);
+
+    expect(findAllPath(tArray, findStr('in array'))).toEqual([
+      [1, 't', 'e', 'e1', 1, 'ee1'],
+      [1, 't', 'e', 'e1', 2],
+      [1, 't', 'f', 'f2'],
+    ]);
 
     const context = {value: 'context'};
     findStr('find').call(context, t.a1.d);
