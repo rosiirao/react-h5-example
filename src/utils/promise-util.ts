@@ -2,16 +2,11 @@ import {ThenArg} from './types.util';
 import ReThrownError from './Errors.shared/ReThrownError';
 
 /**
- *  Promise Function, Promise or normal value type to It's Promise type
- */
-type Promiser<T> = Promise<ThenArg<T>>;
-
-/**
  * An Function type return Promise of T, and if T is PromiseFunction, then it return T's return type;
  * @example
  * PromiseFunction<PromiseFunction<T>> = PromiseFunction<T>
  */
-type PromiseFunction<T> = (...args: never[]) => Promiser<T>;
+type AwaitableFunction<T> = (...args: never[]) => Promise<T> | T;
 
 interface ResultTrait<T> {
   /**
@@ -20,106 +15,101 @@ interface ResultTrait<T> {
   readonly expect: (error?: string) => T;
 }
 
-type ResultOK<T> = [value: T, error: undefined] & ResultTrait<T>;
-type ResultError<E = Error> = [Value: undefined, error: E] & ResultTrait<never>;
+type ResultOK<T> = readonly [value: T, error: undefined] & ResultTrait<T>;
+type ResultError<E = Error> = readonly [value: undefined, error: E] &
+  ResultTrait<never>;
 
 export type Result<T, E = Error> = ResultOK<T> | ResultError<E>;
 
 export type PromiseResult<P, E = Error> = Promise<Result<ThenArg<P>, E>>;
 
-const createPromise = <T, E extends Error = Error>() => {
+function createPromise<T, E extends Error = Error>() {
   let ok: (value: T) => void, err: (err: E) => void;
   const p = new Promise<T>((r, j) => {
     ok = r;
     err = j;
   });
   return [p, ok!, err!] as const;
-};
+}
 
-function createResult<T, E extends Error = Error>(
-  value: T,
-  error?: E
-): Result<T, E> {
-  const p =
-    error === undefined
-      ? ([value, undefined] as ResultOK<T>)
-      : ([undefined, error] as ResultError<E>);
-  return Object.assign(p, {
-    expect: message => {
-      if (error === undefined) return value;
+function Ok<T>(value: T): ResultOK<T> {
+  return Object.assign([value, undefined] as const, {
+    expect: () => value,
+  });
+}
+
+function Err<E extends Error = Error>(error: E): ResultError<E> {
+  return Object.assign([undefined, error] as const, {
+    expect: (message?: string) => {
       if (message === undefined) throw error;
       throw new ReThrownError(message, error);
     },
-  } as ResultTrait<T>);
+  });
 }
 
-export const createPromiseResult = <T, E extends Error = Error>() => {
+export function createPromiseResult<T, E extends Error = Error>() {
   const [p, ok, err] = createPromise<T, E>();
   return [wrap(p), ok, err] as const;
-};
+}
 
 export default createPromise;
 
 /**
  * wrap a promise value to PromiseResult type
  */
-const wrapValue = <T, E extends Error = Error>(
-  value: Promise<T>
-): Promise<Result<T, E>> => {
-  return value
-    .then(r => createResult(r) as ResultOK<T>)
-    .catch(
-      e =>
-        createResult(
-          undefined,
-          e instanceof Error ? e : new Error(e)
-        ) as ResultError<E>
+async function wrapValue<T>(value: T | Promise<T>): PromiseResult<T> {
+  if (typeof value === 'function') {
+    throw new Error(
+      'Unsupported function: Use wrap instead of wrapValue to wrap function'
     );
-};
+  }
+  try {
+    const v = (await value) as ThenArg<T>;
+    return Ok(v);
+  } catch (e) {
+    return Err(
+      e instanceof Error ? e : new Error(String(e ?? 'Unknown error'))
+    );
+  }
+}
 
 /**
- * wrap a function return PromiseResult type.
+ * Wrap a function return PromiseResult type.
  * don't use if directly, use {@link wrap} can get completely intellisense
  * @inner
  */
 const wrapFunction =
-  <F, E extends Error = Error>(
-    /**
-     * use PromiseFunction<T> as param type lost the parameter type infer in the return function type,
-     * but it makes {@link wrap} works when it call wrapFunction<F, E>,
-     * and {@link wrap} use PromiseFunction<F> as its general type parameter so that it can infer correct parameter type
-     */
-    func: PromiseFunction<F>
-  ) =>
+  <T, F extends AwaitableFunction<T> = AwaitableFunction<T>>(func: F) =>
   (...args: Parameters<typeof func>) =>
-    wrapValue<ThenArg<F>, E>(func(...args));
+    wrapValue<T>(
+      (() => {
+        try {
+          return func(...args);
+        } catch (e) {
+          return Promise.reject(e);
+        }
+      })()
+    );
 
 // type Wrap = typeof wrapFunction | typeof wrapResult;
-export function wrap<T, E = Error>(response: Promise<T>): PromiseResult<T, E>;
-export function wrap<F extends PromiseFunction<F>, E = Error>(
+export function wrap<T>(response: Promise<T>): PromiseResult<T>;
+export function wrap<T, F extends AwaitableFunction<T>>(
   func: F
-): (...args: Parameters<typeof func>) => PromiseResult<ThenArg<typeof func>, E>;
+): (...args: Parameters<typeof func>) => PromiseResult<ThenArg<typeof func>>;
 
 /**
  * wrap a promise or promise function, if promise function, wrap it's result
  * @param thenable
  * @returns
  */
-export function wrap<
-  F extends PromiseFunction<F> | Promiser<F>,
-  E extends Error = Error
->(thenable: F) {
-  // return thenable instanceof Function
-  return isPromiseFunction<F>(thenable)
-    ? wrapFunction<F, E>(thenable)
-    : wrapValue<F, E>(thenable);
+export function wrap<T, Thenable extends AwaitableFunction<T> | Promise<T>>(
+  thenable: Thenable | T
+) {
+  // return isPromiseFunction<T>(thenable)
+  return typeof thenable === 'function'
+    ? wrapFunction<T>(thenable as AwaitableFunction<T>)
+    : wrapValue<T>(thenable as T | Promise<T>);
 }
-
-const isPromiseFunction = <F>(
-  f: PromiseFunction<F> | Promiser<F>
-): f is PromiseFunction<F> => {
-  return typeof f === 'function';
-};
 
 export const unwrap = <T, E = Error>([response, error]: Result<T, E>): T => {
   if (error !== undefined) {

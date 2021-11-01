@@ -33,41 +33,54 @@ describe('promise util', () => {
     ['string', undefined],
     [{}, new Error('an error')],
     ['b', undefined],
-  ])('wrap promise function', async (input_result, input_error) => {
-    const [p, ok, err] = createPromise<typeof input_result>();
-    const doPromise = (r: typeof input_result, e: typeof input_error) => {
-      if (e !== undefined) {
-        err(e);
+  ])(
+    'wrap promise function or normal function',
+    async (input_result, input_error) => {
+      const [p, ok, err] = createPromise<typeof input_result>();
+      const doPromise = (r: typeof input_result, e: typeof input_error) => {
+        if (e !== undefined) {
+          err(e);
+        }
+        ok(r);
+        return p;
+      };
+      const wrapPromiseFunction = wrap(doPromise);
+      const wrapNormalFunction = wrap(() => {
+        if (input_error !== undefined) throw input_error;
+        return input_result;
+      });
+
+      const result = await wrapPromiseFunction(input_result, input_error);
+      const [value, error] = result;
+
+      expect(result.slice(0, 1)).toEqual(
+        (await wrapNormalFunction()).slice(0, 1)
+      );
+      const error_pair =
+        error !== undefined
+          ? input_error instanceof Error
+            ? [error, input_error]
+            : [error.message, String(input_error)]
+          : undefined;
+      expect(() => {
+        if (error !== undefined)
+          result.expect('re-thrown error with old error ');
+        else throw new Error('re-thrown error undefined');
+      }).toThrowError('re-thrown error');
+      expect(error_pair?.[0]).toBe(error_pair?.[1]);
+      if (error !== undefined) {
+        return;
       }
-      ok(r);
-      return p;
-    };
-    const promiseResult = wrap(doPromise);
+      expect(() =>
+        input_error === undefined ? result.expect() : undefined
+      ).not.toThrowError();
+      expect(input_error === undefined ? result.expect() : undefined).toBe(
+        value
+      );
 
-    const result = await promiseResult(input_result, input_error);
-    const [value, error] = result;
-    const error_pair =
-      error !== undefined
-        ? input_error instanceof Error
-          ? [error, input_error]
-          : [error.message, String(input_error)]
-        : undefined;
-    expect(() => {
-      if (error !== undefined) result.expect('re-thrown error with old error ');
-      else throw new Error('re-thrown error undefined');
-    }).toThrowError('re-thrown error');
-    expect(error_pair?.[0]).toBe(error_pair?.[1]);
-    if (error !== undefined) {
-      return;
+      expect(value).toBe(input_result);
     }
-    expect(() => {}).not.toThrowError();
-    expect(() =>
-      input_error === undefined ? result.expect() : undefined
-    ).not.toThrowError();
-    expect(input_error === undefined ? result.expect() : undefined).toBe(value);
-
-    expect(value).toBe(input_result);
-  });
+  );
 });
 
 /**
