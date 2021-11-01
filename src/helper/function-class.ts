@@ -14,8 +14,9 @@ declare class OtherClass /* extends Error  */ {
   constructor();
 }
 
-function OtherClass(this: {name: string}) {
+function OtherClass(this: {name: string; other_trait?: string}) {
   this.name = 'other';
+  this.other_trait = 'other trait';
 }
 
 // the second argument correspond to the second argument of Object.defineProperties().
