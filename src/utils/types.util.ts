@@ -1,4 +1,6 @@
-export type Element<T> = T extends (infer U)[] ? U : never;
+export type Element<T> = T extends (infer U)[] | Map<unknown, infer U>
+  ? U
+  : never;
 
 export type ThenArg<T> = T extends PromiseLike<infer U>
   ? U
