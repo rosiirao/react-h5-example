@@ -11,6 +11,7 @@ import PrintPages from './pages/PrintPages';
 import ColorScheme from './pages/ColorScheme';
 import CSSEnv from './pages/CSSEnv';
 import AuthForm from './pages/AuthForm';
+import SharingState from './pages/SharingState';
 
 const routers = [
   {
@@ -74,6 +75,11 @@ const routers = [
     path: '/auth-form',
     component: <AuthForm />,
     title: 'Auth Form',
+  },
+  {
+    path: '/sharing-state',
+    component: <SharingState />,
+    title: 'Sharing State',
   },
 ];
 
