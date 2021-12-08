@@ -11,6 +11,7 @@ import PrintPages from './pages/PrintPages';
 import ColorScheme from './pages/ColorScheme';
 import CSSEnv from './pages/CSSEnv';
 import AuthForm from './pages/AuthForm';
+import KoaApplication from './pages/KoaApplication';
 import SharingState from './pages/SharingState';
 
 const routers = [
@@ -75,6 +76,11 @@ const routers = [
     path: '/auth-form',
     component: <AuthForm />,
     title: 'Auth Form',
+  },
+  {
+    path: '/koa-application',
+    component: <KoaApplication />,
+    title: 'Koa Application',
   },
   {
     path: '/sharing-state',

@@ -8,7 +8,7 @@ import ReThrownError from './Errors.shared/ReThrownError';
  */
 type AwaitableFunction<T> = (...args: never[]) => Promise<T> | T;
 
-interface ResultTrait<T> {
+export interface ResultTrait<T> {
   /**
    * Unpack the Result, and if there is error, then throw new Error
    */
@@ -46,6 +46,11 @@ function Err<E extends Error = Error>(error: E): ResultError<E> {
     },
   });
 }
+
+export const ResultCreator = {
+  Ok,
+  Err,
+};
 
 export function createPromiseResult<T, E extends Error = Error>() {
   const [p, ok, err] = createPromise<T, E>();
@@ -111,6 +116,9 @@ export function wrap<T, Thenable extends AwaitableFunction<T> | Promise<T>>(
     : wrapValue<T>(thenable as T | Promise<T>);
 }
 
+/**
+ * It return the value from the Result, and throw error if the Result is error
+ */
 export const unwrap = <T, E = Error>([response, error]: Result<T, E>): T => {
   if (error !== undefined) {
     throw error;

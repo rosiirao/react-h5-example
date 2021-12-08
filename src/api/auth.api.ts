@@ -1,6 +1,5 @@
-import {HttpError} from '../utils';
-import {Result} from '../utils';
-import {wrap, unwrap} from '../utils';
+import {wrap, unwrap, ResultCreator} from '../utils';
+import {fetchApi} from './shared.api';
 
 const authApi = '/api/auth';
 const loginApi = `${authApi}/login`;
@@ -10,19 +9,6 @@ const userApi = `${authApi}/who`;
 const registerApi = `${authApi}/register`;
 
 let inMemoryToken: {jwt_token: string; jwt_token_exp: string} | undefined;
-
-const fetchApi = (
-  ...arg: Parameters<typeof fetch>
-): Promise<Result<Response, HttpError | Error>> => {
-  const result = fetch(...arg).then(async response => {
-    const status = response.status;
-    if (status >= 400) {
-      throw new HttpError(status, {response}, await response.text());
-    }
-    return response;
-  });
-  return wrap(result);
-};
 
 const login = async (form: FormData | Record<string, string>) => {
   const response = await fetchApi(loginApi, {
@@ -58,21 +44,22 @@ const register = async (form: FormData | Record<string, string>) => {
 };
 
 const user = async () => {
-  const token = await validateToken();
-  if (token === undefined) {
-    return;
-  }
-  return fetchApi(userApi, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).then(response => unwrap(response).text());
+  return fetchWithAuth(userApi).then(
+    response => response && unwrap(response).text()
+  );
 };
 
+/**
+ * Refresh the token of user identity
+ */
 const refreshToken = async (): Promise<typeof inMemoryToken> => {
   return fetchApi(refreshTokenApi).then(response => unwrap(response).json());
 };
 
+/**
+ * Validate the token and try to refresh it if it is expired
+ * @returns The token of user identity
+ */
 const validateToken = async () => {
   const isExpire = (jwtTokenExp: string) =>
     jwtTokenExp !== '' &&
@@ -85,6 +72,19 @@ const validateToken = async () => {
   }
   return inMemoryToken.jwt_token;
 };
+
+export async function fetchWithAuth(...arg: Parameters<typeof fetch>) {
+  const token = await validateToken();
+  if (token === undefined) {
+    return ResultCreator.Err(new Error('login required'));
+  }
+  return fetchApi(arg[0], {
+    ...arg[1],
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
 
 export default {
   login: wrap(login),
