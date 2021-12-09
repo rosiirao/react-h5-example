@@ -4,7 +4,7 @@
  */
 
 import React, {useCallback, useLayoutEffect, useRef, useState} from 'react';
-import {match, useLocation} from 'react-router-dom';
+import {matchPath, useLocation} from 'react-router-dom';
 import {CSSTransition} from 'react-transition-group';
 import classNames from 'classnames';
 
@@ -32,14 +32,15 @@ const useBackState = (pageState: {page?: number}) => {
 
 export default function ViewTransition(
   props: React.PropsWithChildren<{
+    path: string;
     animate?: boolean;
     backAnimate?: boolean;
     viewClass?: string | Record<string, boolean> | Array<string>;
-    match: match<{[x: string]: string | undefined}> | null;
+    // match: object | null;
   }>
 ) {
   const ref = useRef<HTMLDivElement>(null);
-  const location = useLocation<{page: number}>();
+  const location = useLocation();
   const back = useBackState(location.state);
   const [hidden, setHidden] = useState(false);
 
@@ -117,7 +118,8 @@ export default function ViewTransition(
   }, [top]);
   return (
     <CSSTransition
-      in={props.match !== null}
+      // in={props.match !== null}
+      in={matchPath(location.pathname, props.path) !== null}
       appear={true}
       nodeRef={ref}
       classNames={transitionClass}

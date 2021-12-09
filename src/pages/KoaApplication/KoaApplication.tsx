@@ -8,13 +8,13 @@ import {
 } from '../../api/application';
 
 export default function KoaApplication() {
-  const [applicationId, setApplicationId] = useState<string>();
-  const [roleName, setRoleName] = useState<string>();
-  const [roleId, setRoleId] = useState<string>();
-  const onClickGetApplicition = function () {
+  const [applicationId, setApplicationId] = useState<string>('');
+  const [roleName, setRoleName] = useState<string>('');
+  const [roleId, setRoleId] = useState<string>('');
+  const onClickGetApplication = function () {
     return getApplication(applicationId);
   };
-  const onClcikAddRole = function () {
+  const onClickAddRole = function () {
     if (applicationId === undefined) {
       alert('The application id is not indicated');
       return;
@@ -54,7 +54,7 @@ export default function KoaApplication() {
     }
     return updateApplicationRole(applicationId, roleId, roleName);
   };
-  const onClcikDeleteRole = function () {
+  const onClickDeleteRole = function () {
     if (applicationId === undefined) {
       alert('The application id is not indicated');
       return;
@@ -103,12 +103,12 @@ export default function KoaApplication() {
       </ul>
       <ul>
         <li>
-          <button type="button" onClick={onClickGetApplicition}>
+          <button type="button" onClick={onClickGetApplication}>
             get application
           </button>
         </li>
         <li>
-          <button type="button" onClick={onClcikAddRole}>
+          <button type="button" onClick={onClickAddRole}>
             add role
           </button>
         </li>
@@ -123,7 +123,7 @@ export default function KoaApplication() {
           </button>
         </li>
         <li>
-          <button type="button" onClick={onClcikDeleteRole}>
+          <button type="button" onClick={onClickDeleteRole}>
             delete role
           </button>
         </li>

@@ -136,10 +136,11 @@ export default function WheelEvent() {
   > = event => {
     debounceSetRotate(Number(event.currentTarget.value));
   };
-  const onChangeScale: React.EventHandler<React.ChangeEvent<HTMLInputElement>> =
-    event => {
-      debounceSetScale(Number(event.currentTarget.value));
-    };
+  const onChangeScale: React.EventHandler<
+    React.ChangeEvent<HTMLInputElement>
+  > = event => {
+    debounceSetScale(Number(event.currentTarget.value));
+  };
   // useLayoutEffect(() => {
   //   const wheelBoxDiv = wheelBox.current;
   //   const onScroll = (event: Event) => {

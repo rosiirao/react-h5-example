@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {matchPath, useLocation} from 'react-router-dom';
+import {/* matchPath, */ useLocation} from 'react-router-dom';
 import ViewLink from './ViewLink';
 
 import './ViewNav.scss';
@@ -39,7 +39,8 @@ export default function ViewNav(
                   ...props.linkOthers,
                 }}
                 replace={
-                  matchPath(location.pathname, {path, exact: true}) !== null
+                  location.pathname === path
+                  // matchPath(location.pathname, {path, exact: true}) !== null
                 }
                 linkClass={props.linkClass}
                 path={path}

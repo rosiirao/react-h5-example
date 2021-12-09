@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import routes from './router';
 
 import ThemeSwitch from './components/ThemeSwitch';
@@ -37,23 +37,28 @@ export default function Home() {
           </Nav>
         </header>
         <main>
-          {routes.map(r => (
-            <Route key={r.path} exact={r.exact ?? false} path={r.path}>
-              {({match}) => (
-                <ViewTransition
-                  match={match}
-                  viewClass="view-root"
-                  backAnimate={true}
-                >
-                  {typeof r.component === 'function' ? (
-                    <r.component />
-                  ) : (
-                    r.component
-                  )}
-                </ViewTransition>
-              )}
-            </Route>
-          ))}
+          <Routes>
+            {routes.map(r => (
+              <Route
+                key={r.path}
+                {...(r.exact ? {caseSensitive: true} : {})}
+                path={r.path}
+                element={
+                  <ViewTransition
+                    viewClass="view-root"
+                    backAnimate={true}
+                    path={r.path}
+                  >
+                    {typeof r.component === 'function' ? (
+                      <r.component />
+                    ) : (
+                      r.component
+                    )}
+                  </ViewTransition>
+                }
+              ></Route>
+            ))}
+          </Routes>
         </main>
       </Router>
     </ThemeContext.Provider>
