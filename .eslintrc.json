@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "react-app/jest", "./node_modules/gts/"],
+  "extends": "./node_modules/gts/",
   "env": {
     "serviceworker": true,
     "worker": true

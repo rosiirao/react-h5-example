@@ -23,11 +23,12 @@ export default function ViewLink(props: {
     if (
       matchPath({path, end: true, caseSensitive: true}, l.pathname) === null
     ) {
+      const state = l.state as {page?: number};
       setLinkTo({
         ...l,
         hash: '#',
         pathname: path,
-        state: {...l.state, page: (l.state?.page ?? 0) + 1},
+        state: {...state, page: (state?.page ?? 0) + 1},
       });
     }
   }, [l, path]);

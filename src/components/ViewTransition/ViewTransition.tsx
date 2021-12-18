@@ -41,7 +41,7 @@ export default function ViewTransition(
 ) {
   const ref = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const back = useBackState(location.state);
+  const back = useBackState(location.state as {page?: number});
   const [hidden, setHidden] = useState(false);
 
   const hide = useCallback(() => {

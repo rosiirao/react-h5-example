@@ -1,0 +1,3 @@
+option[data-type]::before {
+  content: attr(data-type) ':'
+}

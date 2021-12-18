@@ -81,6 +81,7 @@ export async function fetchWithAuth(...arg: Parameters<typeof fetch>) {
   return fetchApi(arg[0], {
     ...arg[1],
     headers: {
+      ...arg[1]?.headers,
       Authorization: `Bearer ${token}`,
     },
   });
