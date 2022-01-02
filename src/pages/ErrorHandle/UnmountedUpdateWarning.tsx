@@ -1,16 +1,5 @@
-import {useEffect, useRef, useState} from 'react';
-
-const useMounted = (debug?: string) => {
-  const mounted = useRef(false);
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      if (debug) console.log(`${debug} Unmounted`);
-      mounted.current = false;
-    };
-  }, [debug]);
-  return mounted;
-};
+import {useEffect, useState} from 'react';
+import {useMounted} from '../../hooks/useMounted';
 
 const Inner = ({triggerWarn = false}: {triggerWarn?: boolean}) => {
   const [text, setText] = useState(

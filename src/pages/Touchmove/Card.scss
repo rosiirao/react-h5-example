@@ -1,0 +1,31 @@
+.card-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+
+  padding: 0.5em 1.5em;
+
+  &:is(ul, ol) {
+    list-style: none;
+  }
+}
+
+.card {
+  border-radius: 1em;
+  padding: 0.5em;
+  min-width: 5em;
+  aspect-ratio: 1 / 1;
+  background-color: hsla(0, 0, 100, 0.5);
+
+  /** 
+   * Any inner element will not be the touch drop target
+   * This make element hidden when elementFromPoint called   
+   */
+  & * {
+    pointer-events: none;
+  }
+}
+
+.card--moving {
+  opacity: 0.2;
+}

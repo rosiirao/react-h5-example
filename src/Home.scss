@@ -9,11 +9,11 @@
     height: $height;
   }
 
-  #root {
-    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - #{$height});
-    // outline: 2px solid red;
-    // outline-offset: -5px;
-  }
+  // #root {
+  // height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - #{$height});
+  // outline: 2px solid red;
+  // outline-offset: -5px;
+  // }
 
   /* ios safari detect */
   @supports (-webkit-touch-callout: none) {

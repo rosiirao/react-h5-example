@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import useTouch from './useTouch';
+import useTouch from '../../hooks/useTouchmove';
 import usePtrStatus, {PtrStatus} from './usePtrStatus';
 
 import './TouchPtr.scss';
@@ -52,9 +52,9 @@ type TouchPtrProps = React.PropsWithChildren<{
 export default (props: TouchPtrProps) => {
   const {ptrThreshold = 0, loader, preloader = <Preloader />} = props;
   const threshold = Math.min(Math.max(100, ptrThreshold), 160);
-  const {onTouch, move, cancelled} = useTouch(threshold);
+  const {onTouch, move, cancelled} = useTouch();
 
-  const ptrStatus = usePtr({move, cancelled}, threshold, loader);
+  const ptrStatus = usePtr({move: move.y, cancelled}, threshold, loader);
 
   const onTouchEvent = useCallback(
     evt => {
@@ -64,7 +64,7 @@ export default (props: TouchPtrProps) => {
     [ptrStatus, onTouch]
   );
 
-  const touchOffset = ptrStatus.state === PtrStatus.Loading ? 0 : move;
+  const touchOffset = ptrStatus.state === PtrStatus.Loading ? 0 : move.y;
   const ptrStatusName = PtrStatus[ptrStatus.state].toLowerCase();
   const indicatorRotate = ptrStatus.state === PtrStatus.Fullfil ? 225 : 45;
   const preloaderEl = ptrStatus.state === PtrStatus.Loading ? preloader : null;

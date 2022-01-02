@@ -3,6 +3,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import './TouchPtr.scss';
 import TouchZone from '../../components/TouchPtr';
 import InfiniteScroll from '../../components/InfiniteScroll';
+import {useMounted} from '../../hooks/useMounted';
 
 export default function () {
   const [data, setData] = useState([{count: 0, date: new Date()}]);
@@ -22,11 +23,19 @@ export default function () {
     });
   }, [setData]);
 
+  const mounted = useMounted();
   useEffect(() => {
     return () => {
       clearTimeout(loaderId.current);
     };
   }, []);
+  useEffect(() => {
+    if (mounted.current) {
+      for (let i = 6; i >= 0; i--) {
+        loader();
+      }
+    }
+  }, [mounted]);
 
   const contentMore = data[data.length - 1].count < 40;
 

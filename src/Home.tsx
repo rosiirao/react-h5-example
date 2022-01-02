@@ -4,7 +4,7 @@ import routes from './router';
 import ThemeSwitch from './components/ThemeSwitch';
 import ThemeContext, {useTheme, Theme} from './components/ThemeContext';
 
-import ViewTransition from './components/ViewTransition';
+// import ViewTransition from './components/ViewTransition';
 import Nav from './components/ViewNav';
 
 import './Home.scss';
@@ -43,18 +43,25 @@ export default function Home() {
                 key={r.path}
                 {...(r.exact ? {caseSensitive: true} : {})}
                 path={r.path}
+                // element={
+                //   <ViewTransition
+                //     viewClass="view-root"
+                //     backAnimate={true}
+                //     path={r.path}
+                //   >
+                //     {typeof r.component === 'function' ? (
+                //       <r.component />
+                //     ) : (
+                //       r.component
+                //     )}
+                //   </ViewTransition>
+                // }
                 element={
-                  <ViewTransition
-                    viewClass="view-root"
-                    backAnimate={true}
-                    path={r.path}
-                  >
-                    {typeof r.component === 'function' ? (
-                      <r.component />
-                    ) : (
-                      r.component
-                    )}
-                  </ViewTransition>
+                  typeof r.component === 'function' ? (
+                    <r.component />
+                  ) : (
+                    r.component
+                  )
                 }
               ></Route>
             ))}

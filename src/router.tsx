@@ -12,6 +12,7 @@ import ColorScheme from './pages/ColorScheme';
 import CSSEnv from './pages/CSSEnv';
 import AuthForm from './pages/AuthForm';
 import KoaApplication from './pages/KoaApplication';
+import Touchmove from './pages/Touchmove';
 import SharingState from './pages/SharingState';
 
 const routers = [
@@ -81,6 +82,11 @@ const routers = [
     path: '/koa-application',
     component: <KoaApplication />,
     title: 'Koa Application',
+  },
+  {
+    path: '/touchmove-card',
+    component: <Touchmove />,
+    title: 'touchmove card',
   },
   {
     path: '/sharing-state',

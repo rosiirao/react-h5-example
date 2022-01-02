@@ -7,6 +7,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+overscroll-behavior: contain;
+}
+
+.flex {
+  display: flex;
+  justify-content: stretch;
+  justify-content: stretch;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 html {
