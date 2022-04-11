@@ -57,7 +57,7 @@ export default (props: TouchPtrProps) => {
   const ptrStatus = usePtr({move: move.y, cancelled}, threshold, loader);
 
   const onTouchEvent = useCallback(
-    evt => {
+    (evt: React.TouchEvent<Element>) => {
       if (ptrStatus.state === PtrStatus.Loading) return;
       onTouch(evt);
     },

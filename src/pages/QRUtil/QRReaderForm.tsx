@@ -46,7 +46,7 @@ export default function QRReader(props: Props) {
   }, [setDevices, setSelectedDevice]);
 
   const onSelectDevice = useCallback(
-    e => {
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
       const value = e.target.value;
       setSelectedDevice(value);
     },
@@ -54,8 +54,9 @@ export default function QRReader(props: Props) {
   );
 
   const onChangeFile = useCallback(
-    e => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       const fileList = e.target.files;
+      if (fileList === null) return;
       let file;
       for (let i = 0; i < fileList.length; i++) {
         if (fileList[i].type.match(/^image\//)) {
@@ -69,7 +70,7 @@ export default function QRReader(props: Props) {
   );
   const [, setEncoding] = useState('utf-8');
   const onSelectEncoding = useCallback(
-    e => {
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
       setEncoding(e.target.value);
     },
     [setEncoding]

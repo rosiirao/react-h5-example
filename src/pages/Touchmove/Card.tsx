@@ -150,8 +150,11 @@ function CardItem(
     cancelled,
   } = useTouchmove();
 
-  const [originalPosition, setOriginalPosition] =
-    useState<{x: number; y: number; w: number}>();
+  const [originalPosition, setOriginalPosition] = useState<{
+    x: number;
+    y: number;
+    w: number;
+  }>();
 
   const throttle = useThrottle();
 
