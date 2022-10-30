@@ -14,6 +14,10 @@ let cards = (c => {
   }));
 })(9);
 
+/**
+ *
+ * @deprecated The position is computed by document.elementFromPoint method
+ */
 const createIntersectionObserver = (target: HTMLElement) => {
   const observer = new globalThis.IntersectionObserver(
     entries => {
@@ -103,11 +107,6 @@ export default function Card() {
   };
 
   const el = useRef<HTMLUListElement>(null);
-  const getBoundingContainerRect = function () {
-    if (el.current === null) return;
-    return el.current.getBoundingClientRect();
-  };
-
   return (
     <ul
       className="card-list"
@@ -121,7 +120,6 @@ export default function Card() {
           moveCard={moveCard}
           moveCardConfirm={moveCardConfirm}
           moveCardCancel={moveCardCancel}
-          getBoundingContainerRect={getBoundingContainerRect}
         ></MovableCardItem>
       ))}
     </ul>
@@ -133,11 +131,14 @@ function CardItem(
     data: {i: number; v: string};
     moveCardConfirm?: () => void;
     moveCardCancel?: () => void;
-    getBoundingContainerRect: () => void | {x: number; y: number};
     /**
      * Move el behind the previous
      */
-    moveCard?: (el: HTMLElement, previous: HTMLElement) => void;
+    moveCard?: (
+      el: HTMLElement,
+      previous: HTMLElement,
+      p?: 'before' | 'after'
+    ) => void;
   }>
 ) {
   const mounted = useMounted();
@@ -150,67 +151,61 @@ function CardItem(
     cancelled,
   } = useTouchmove();
 
-  const [originalPosition, setOriginalPosition] = useState<{
-    x: number;
-    y: number;
-    w: number;
-  }>();
+  const [shadow, setShadow] = useState<{x: number; y: number; w: number}>();
 
-  const throttle = useThrottle();
+  const timer = useTimer(100);
 
   useEffect(() => {
     if (!mounted.current || el.current === null) return;
-    if (onMoving) {
-      if (originalPosition !== undefined) return;
-      const {x, y} = move;
-      const container = props.getBoundingContainerRect() ?? {x: 0, y: 0};
-      const e = el.current.getClientRects()[0];
-      setOriginalPosition({
-        x: e.left - x - container.x,
-        y: e.top - y - container.y,
-        w: e.width,
-      });
-    } else {
-      setOriginalPosition(undefined);
+    if (!onMoving) {
+      setShadow(undefined);
+      return;
     }
-  }, [onMoving, move, originalPosition, props.getBoundingContainerRect]);
+    setShadow({
+      x: el.current.offsetLeft,
+      y: el.current.offsetTop,
+      w: el.current.offsetWidth,
+    });
+  }, [onMoving]);
 
   const [cardPosition, setCardPosition] = useState<{x: number; y: number}>();
 
   useEffect(() => {
     if (cancelled) {
       props.moveCardCancel?.();
-      throttle();
+      timer(); // call once again tags the prev timer cancelled
       setCardPosition(undefined);
       return;
     }
 
     if (!mounted.current || el.current === null) return;
-    if (originalPosition === undefined) return;
+    if (shadow === undefined) return;
     const {x, y} = onMoving ? move : end;
     if (Math.abs(x) < 50 && Math.abs(y) < 50) return;
 
-    throttle().then(data => {
-      if (data === throttle_cancelled) return;
+    timer().then(data => {
+      if (data === timer_cancelled) return;
       if (!mounted.current || shadowCard.current === null) return;
       setCardPosition(shadowCard.current.getBoundingClientRect());
     });
-  }, [originalPosition, onMoving, move, end, cancelled]);
+  }, [shadow, onMoving, move, end, cancelled]);
 
   useEffect(() => {
     if (!mounted.current || el.current === null) return;
     if (cardPosition === undefined) return;
 
+    const {x: cx, y: cy} = cardPosition;
     // Minus 1 on position to get the outer element
-    const target = document.elementFromPoint(
-      cardPosition.x - 1,
-      cardPosition.y - 1
-    );
+    const target = document.elementFromPoint(cx - 1, cy - 1);
     if (el.current === target) {
       if (!onMoving) props.moveCardConfirm?.();
       return;
     }
-    if (target !== null) props.moveCard?.(el.current, target as HTMLElement);
+    if (target !== null) {
+      const {x, width} = target.getClientRects()[0];
+      const p = cx > x + width / 2 ? 'before' : 'after';
+      props.moveCard?.(el.current, target as HTMLElement, p);
+    }
     if (!onMoving) props.moveCardConfirm?.();
   }, [cardPosition, props.moveCard, props.moveCardConfirm]);
 
@@ -229,16 +224,15 @@ function CardItem(
       >
         <p>{props.data.i + ' : ' + props.data.v}</p>
       </li>
-      {onMoving && originalPosition !== undefined ? (
+      {onMoving && shadow !== undefined ? (
         <li
           className="card card--shadow"
           ref={shadowCard}
           style={{
-            position: 'absolute',
-            width: originalPosition.w + 'px',
-            left: originalPosition.x + 'px',
-            top: originalPosition.y + 'px',
-            transform: `translate(${move.x}px, ${move.y}px)`,
+            width: shadow.w + 'px',
+            transform: `translate(calc(${move.x + shadow.x}px - 100vw), ${
+              move.y + shadow.y
+            }px)`,
           }}
         >
           <p>
@@ -250,22 +244,31 @@ function CardItem(
   );
 }
 
-function useThrottle() {
-  const [throttleFn] = useState<{t: () => Promise<unknown>}>({t: throttle()});
-  return throttleFn.t;
+function useTimer(ms: number) {
+  const [timer] = useState({t: createTimer(ms)});
+  return timer.t;
 }
 
-const throttle_cancelled = Symbol('cancelled');
-function throttle() {
+const timer_cancelled = Symbol('cancelled');
+/**
+ * createTimer() return a timer function
+ * @param ms should not less than 10ms
+ */
+function createTimer(ms = 500) {
+  ms = Math.max(10, ms);
   let p: NodeJS.Timeout;
-  let ok: (value?: unknown) => void;
-  return function () {
+  let ok: (value?: typeof timer_cancelled) => void;
+  /**
+   * timer() returns a promise will resolved ,
+   * when it is called once again, the promise returned previous in time quota will be resolved with throttle_cancelled value
+   */
+  return function timer() {
     if (p !== undefined) {
       clearTimeout(p);
-      ok(throttle_cancelled);
+      ok(timer_cancelled);
     }
-    const r = new Promise(r => (ok = r));
-    p = setTimeout(() => void ok(), 500);
+    const r = new Promise<typeof timer_cancelled | void>(r => (ok = r));
+    p = setTimeout(() => void ok(), ms);
     return r;
   };
 }

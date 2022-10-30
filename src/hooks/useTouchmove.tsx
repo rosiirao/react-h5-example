@@ -33,7 +33,7 @@ const setTouchesAction =
   (touches: Touches): React.SetStateAction<Touches | undefined> =>
   prev => {
     if (prev === undefined) return touches;
-    const next: Touches = [...prev];
+    const next = [...prev];
     for (const {identifier, pageX, pageY, end} of touches) {
       const i = next.findIndex(p => p.identifier === identifier);
       if (i === -1) {
@@ -84,7 +84,8 @@ export default function useTouchmove(ofHiddenClass = 'overflow-hidden') {
       setTouches(undefined);
       return;
     }
-
+    // prevent browser built-in pull to refresh
+    evt.preventDefault();
     const touches = getTouches(evt, evt.type === 'touchend' ? true : undefined);
     setCancelled(false);
     setTouches(setTouchesAction(touches));

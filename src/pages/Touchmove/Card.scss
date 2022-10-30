@@ -29,3 +29,9 @@
 .card--moving {
   opacity: 0.2;
 }
+
+.card--shadow {
+  position: absolute;
+  top: 0;
+  left: 100vw;
+}
