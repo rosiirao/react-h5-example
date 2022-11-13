@@ -4,6 +4,7 @@ import './Card.scss';
 import {useMounted} from '../../hooks/useMounted';
 import useTouchmove from '../../hooks/useTouchmove';
 import classNames from 'classnames';
+import timer from '../../utils/timer';
 
 let cards = (c => {
   return new Array(c).fill(0).map((_, i) => ({
@@ -173,7 +174,7 @@ function CardItem(
   useEffect(() => {
     if (cancelled) {
       props.moveCardCancel?.();
-      timer(); // call once again tags the prev timer cancelled
+      timer.timer(); // call once again tags the prev timer cancelled
       setCardPosition(undefined);
       return;
     }
@@ -183,8 +184,8 @@ function CardItem(
     const {x, y} = onMoving ? move : end;
     if (Math.abs(x) < 50 && Math.abs(y) < 50) return;
 
-    timer().then(data => {
-      if (data === timer_cancelled) return;
+    timer.timer().then(data => {
+      if (data === timer.cancelled) return;
       if (!mounted.current || shadowCard.current === null) return;
       setCardPosition(shadowCard.current.getBoundingClientRect());
     });
@@ -245,30 +246,6 @@ function CardItem(
 }
 
 function useTimer(ms: number) {
-  const [timer] = useState({t: createTimer(ms)});
-  return timer.t;
-}
-
-const timer_cancelled = Symbol('cancelled');
-/**
- * createTimer() return a timer function
- * @param ms should not less than 10ms
- */
-function createTimer(ms = 500) {
-  ms = Math.max(10, ms);
-  let p: NodeJS.Timeout;
-  let ok: (value?: typeof timer_cancelled) => void;
-  /**
-   * timer() returns a promise will resolved ,
-   * when it is called once again, the promise returned previous in time quota will be resolved with throttle_cancelled value
-   */
-  return function timer() {
-    if (p !== undefined) {
-      clearTimeout(p);
-      ok(timer_cancelled);
-    }
-    const r = new Promise<typeof timer_cancelled | void>(r => (ok = r));
-    p = setTimeout(() => void ok(), ms);
-    return r;
-  };
+  const [{timer: t}] = useState({timer: timer.createTimer(ms)});
+  return {timer: t, cancelled: timer.timer_cancelled};
 }
