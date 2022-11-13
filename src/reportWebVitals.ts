@@ -1,6 +1,7 @@
-import {ReportHandler} from 'web-vitals';
+/* eslint-disable node/no-unpublished-import */
+import type {ReportCallback} from 'web-vitals';
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
+const reportWebVitals = (onPerfEntry?: ReportCallback) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     import('web-vitals').then(({getCLS, getFID, getFCP, getLCP, getTTFB}) => {
       getCLS(onPerfEntry);
