@@ -10,7 +10,7 @@ describe('utils test', () => {
     [2, 20],
   ])('debounce %i output %i', async (times, count) => {
     const fn = jest.fn<number, [number]>().mockImplementation((a: number) => a);
-    const d = debounce<number, typeof fn>(fn, 100);
+    const d = debounce(fn, 100);
     let start = 1;
     for (let t = 0; t < times; t++) {
       const [p, ok] = createPromise<number>();

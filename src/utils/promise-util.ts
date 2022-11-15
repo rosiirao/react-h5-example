@@ -1,4 +1,3 @@
-import {ThenArg} from './types.util';
 import ReThrownError from './Errors.shared/ReThrownError';
 
 /**
@@ -6,7 +5,7 @@ import ReThrownError from './Errors.shared/ReThrownError';
  * @example
  * PromiseFunction<PromiseFunction<T>> = PromiseFunction<T>
  */
-type AwaitableFunction<T> = (...args: never[]) => Promise<T> | T;
+type AwaitableFunction<T, P extends unknown[]> = (...args: P) => Promise<T> | T;
 
 export interface ResultTrait<T> {
   /**
@@ -21,7 +20,7 @@ type ResultError<E = Error> = readonly [value: undefined, error: E] &
 
 export type Result<T, E = Error> = ResultOK<T> | ResultError<E>;
 
-export type PromiseResult<P, E = Error> = Promise<Result<ThenArg<P>, E>>;
+export type PromiseResult<T, E = Error> = Promise<Result<Awaited<T>, E>>;
 
 function createPromise<T, E extends Error = Error>() {
   let ok: (value: T) => void, err: (err: E) => void;
@@ -69,7 +68,7 @@ async function wrapValue<T>(value: T | Promise<T>): PromiseResult<T> {
     );
   }
   try {
-    const v = (await value) as ThenArg<T>;
+    const v = await value;
     return Ok(v);
   } catch (e) {
     return Err(
@@ -84,7 +83,7 @@ async function wrapValue<T>(value: T | Promise<T>): PromiseResult<T> {
  * @inner
  */
 const wrapFunction =
-  <T, F extends AwaitableFunction<T> = AwaitableFunction<T>>(func: F) =>
+  <T, P extends unknown[]>(func: (...args: P) => Promise<T> | T) =>
   (...args: Parameters<typeof func>) =>
     wrapValue<T>(
       (() => {
@@ -98,30 +97,36 @@ const wrapFunction =
 
 // type Wrap = typeof wrapFunction | typeof wrapResult;
 export function wrap<T>(response: Promise<T>): PromiseResult<T>;
-export function wrap<T, F extends AwaitableFunction<T>>(
-  func: F
-): (...args: Parameters<typeof func>) => PromiseResult<ThenArg<typeof func>>;
+export function wrap<T, P extends unknown[]>(
+  func: AwaitableFunction<T, P>
+): (...args: P) => PromiseResult<T>;
 
 /**
  * wrap a promise or promise function, if promise function, wrap it's result
  * @param thenable
  * @returns
  */
-export function wrap<T, Thenable extends AwaitableFunction<T> | Promise<T>>(
-  thenable: Thenable | T
+export function wrap<T, P extends unknown[]>(
+  thenable: AwaitableFunction<T, P> | Promise<T> | T
 ) {
-  // return isPromiseFunction<T>(thenable)
-  return typeof thenable === 'function'
-    ? wrapFunction<T>(thenable as AwaitableFunction<T>)
-    : wrapValue<T>(thenable as T | Promise<T>);
+  function isAwaitableFunction(
+    thenable: unknown
+  ): thenable is AwaitableFunction<T, P> {
+    return typeof thenable === 'function';
+  }
+  return isAwaitableFunction(thenable)
+    ? wrapFunction(thenable)
+    : wrapValue(thenable);
 }
 
 /**
  * It return the value from the Result, and throw error if the Result is error
  */
-export const unwrap = <T, E = Error>([response, error]: Result<T, E>): T => {
-  if (error !== undefined) {
-    throw error;
+export const unwrap = <T, E = Error>(result: Result<T, E>): T => {
+  function assertResultOK(result: Result<T, E>): asserts result is ResultOK<T> {
+    const [, error] = result;
+    if (error !== undefined) throw error;
   }
-  return response!;
+  assertResultOK(result);
+  return result[0];
 };

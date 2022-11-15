@@ -3,9 +3,9 @@ export type Element<T> = T extends (infer U)[] | Map<unknown, infer U>
   : never;
 
 export type ThenArg<T> = T extends PromiseLike<infer U>
-  ? U
-  : T extends (...args: never[]) => PromiseLike<infer V>
-  ? V
+  ? Awaited<U>
+  : T extends (...args: unknown[]) => infer V
+  ? Awaited<V>
   : T;
 
 export type PropType<T, P extends keyof T> = T[P];

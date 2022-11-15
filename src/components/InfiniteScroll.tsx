@@ -16,10 +16,7 @@ export default (
   const [loading, setLoading] = useState(false);
   const prepareLoading = useCallback(() => setLoading(true), [setLoading]);
   const dataLoader = useMemo(
-    () =>
-      loader !== undefined
-        ? debounce<void, typeof loader>(loader, 200)
-        : undefined,
+    () => (loader !== undefined ? debounce(loader, 200) : undefined),
     [loader]
   );
   useEffect(() => {
