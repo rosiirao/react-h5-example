@@ -1,4 +1,4 @@
-import createPromise from './promise-util';
+import timer from './timer';
 
 /**
  *
@@ -13,33 +13,25 @@ export const debounce = <T, P extends unknown[]>(
   timeout: number,
   {onceInQueue} = {onceInQueue: false}
 ) => {
-  let _timer: number | undefined;
-  let _arg: P | undefined;
-  let _ok: (r?: T) => void;
-  let _p: Promise<T | void>;
-  return (...arg: P): PromiseLike<T | void> => {
-    _arg = arg;
-
-    // resolve last call
-    if (_timer !== undefined) _ok();
-
-    // current call promise
-    [_p, _ok] = createPromise<T | void>();
-
-    if (_timer !== undefined) {
-      if (!onceInQueue) {
-        return _p;
-      }
-      clearTimeout(_timer);
+  if (timeout < 0)
+    throw new Error(`timeout parameter must be greater than 0, got ${timer}`);
+  type R = Promise<typeof timer.timer_cancelled | void> | void;
+  // Two timers, volatile.timer is cancelled if new comes
+  const [volatile, stay] = [0, 0].map(() => ({
+    timer: undefined as R,
+    set: timer.createTimer(timeout),
+  }));
+  return async function (...args: P): Promise<T | void> {
+    if (onceInQueue) {
+      const t = await volatile.set();
+      if (t === timer.timer_cancelled) return;
+      return fn(...args);
     }
-
-    _timer = window.setTimeout(() => {
-      if (_arg === undefined) throw new Error('function internal error');
-      const r = fn(..._arg);
-      _timer = undefined;
-      _arg = undefined;
-      _ok(r);
-    }, timeout);
-    return _p;
+    if (stay.timer === undefined) stay.timer = stay.set();
+    volatile.timer = volatile.set();
+    const v = await Promise.race([volatile.timer, stay.timer]);
+    if (v === timer.timer_cancelled) return;
+    stay.timer = undefined;
+    return fn(...args);
   };
 };

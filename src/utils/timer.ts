@@ -1,25 +1,28 @@
+import createPromise from './promise-util';
 const timer_cancelled = Symbol('cancelled');
+
 /**
  * createTimer() return a timer function
  * @param ms should not less than 10ms
  */
 function createTimer(ms = 500) {
   const base = ms;
-  let p: NodeJS.Timeout;
+  let t: NodeJS.Timeout;
+  let p: Promise<typeof timer_cancelled | void>;
   let ok: (value?: typeof timer_cancelled) => void;
   /**
-   * timer() returns a promise will resolved ,
-   * when it is called once again, the promise returned previous in time quota will be resolved with throttle_cancelled value
+   * @return a promise will resolved ,
+   * when it is called once again, the promise previously returned will be resolved with *timer_cancelled*
    */
   return function timer(ms = base) {
     ms = Math.max(ms, 10);
-    if (p !== undefined) {
-      clearTimeout(p);
+    if (t !== undefined) {
+      clearTimeout(t);
       ok(timer_cancelled);
     }
-    const r = new Promise<typeof timer_cancelled | void>(r => (ok = r));
-    p = setTimeout(() => void ok(), ms);
-    return r;
+    [p, ok] = createPromise<typeof timer_cancelled | void>();
+    t = setTimeout(() => void ok(), ms);
+    return p;
   };
 }
 
