@@ -89,11 +89,25 @@ describe('object shared function test', () => {
     // Got a object  { r1: { a : t.r2, b: t.f}, r2: { a: t.r1, b: t.f}}, the t.r1 and t.r2 is reference mutually
     expect(findAllPath(t, createStrFinder('in array'))).toEqual([
       ['f', 'f2'],
-      ['f1', expect.any(Object)],
-      ['r1', 'b', expect.any(Object)],
-      ['r1', 'a', 'b', expect.any(Object)],
-      ['r1', 'a', 'a', expect.any(Object)],
-      ['r2', expect.any(Object)],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ['f1', expect.toBeSymbol()],
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ['r1', 'b', expect.toBeSymbol()],
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ['r1', 'a', 'b', expect.toBeSymbol()],
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ['r1', 'a', 'a', expect.toBeSymbol()],
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ['r2', expect.toBeSymbol()],
     ]);
     expect(findAllPath(t, createStrFinder('in array'))).toHaveLength(6);
   });

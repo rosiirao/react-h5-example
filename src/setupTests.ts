@@ -44,3 +44,49 @@ export function setupIntersectionObserverMock({
 }
 
 setupIntersectionObserverMock();
+
+/**
+ * toBeSymbol
+ */
+
+// eslint-disable-next-line node/no-unpublished-import
+import {expect} from '@jest/globals';
+// eslint-disable-next-line node/no-unpublished-import
+import type {MatcherFunction} from 'expect';
+const toBeSymbol: MatcherFunction<[]> =
+  // `floor` and `ceiling` get types from the line above
+  // it is recommended to type them as `unknown` and to validate the values
+  function (actual) {
+    const pass = typeof actual === 'symbol';
+    if (pass) {
+      return {
+        message: () =>
+          // `this` context will have correct typings
+          `expected ${this.utils.printReceived(
+            actual
+          )} not to be type of ${this.utils.printExpected('symbol')}`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () =>
+          `expected ${this.utils.printReceived(
+            actual
+          )} to be type of ${this.utils.printExpected('symbol')}`,
+        pass: false,
+      };
+    }
+  };
+
+expect.extend({
+  toBeSymbol,
+});
+
+declare module 'expect' {
+  interface AsymmetricMatchers {
+    toBeSymbol(): void;
+  }
+  interface Matchers<R> {
+    toBeSymbol(): R;
+  }
+}
