@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import {useMounted} from '../../hooks/useMounted';
+import { useEffect, useState } from 'react';
+import { useMounted } from '../../hooks/useMounted';
 
-const Inner = ({triggerWarn = false}: {triggerWarn?: boolean}) => {
+const Inner = ({ triggerWarn = false }: { triggerWarn?: boolean }) => {
   const [text, setText] = useState(
     `Inner Timeout Destroy Component with warning ${triggerWarn ? 'on' : 'off'}`
   );
@@ -48,7 +48,7 @@ export default () => {
     setTimeout(() => {
       setInnerOn(false);
     }, 500);
-  }, [warning]);
+  }, []);
 
   return (
     <>

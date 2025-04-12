@@ -1,11 +1,11 @@
 // eslint-disable-next-line node/no-unpublished-require
 const {createProxyMiddleware} = require('http-proxy-middleware');
 
-const proxyApiTarget = process.env.PROXY_API_TARGET;
+const proxyApiTarget = import.meta.env.PROXY_API_TARGET;
 
 module.exports =
   proxyApiTarget !== undefined
-    ? function (app) {
+    ? ((app) => {
         app.use(
           '/api',
           createProxyMiddleware({
@@ -20,5 +20,5 @@ module.exports =
             secure: false,
           })
         );
-      }
+      })
     : undefined;

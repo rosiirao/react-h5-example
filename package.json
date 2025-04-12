@@ -10,12 +10,8 @@
     "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^14.1.0",
     "@types/lodash": "^4.14.170",
-    "@types/react": "^18.0.1",
-    "@types/react-dom": "^18.0.0",
     "@types/react-transition-group": "^4.4.2",
     "@types/w3c-image-capture": "^1.0.5",
-    "@zxing/browser": "^0.1.1",
-    "@zxing/library": "^0.19.1",
     "classnames": "^2.3.1",
     "include-media": "^1.4.10",
     "lodash": "^4.17.21",
@@ -26,8 +22,8 @@
     "sass": "^1.39.2",
     "workbox-background-sync": "^6.3.0",
     "workbox-broadcast-update": "^6.3.0",
-    "workbox-cacheable-response": "^6.3.0",
-    "workbox-core": "^6.3.0",
+    "workbox-cacheable-response": "^7.3.0",
+    "workbox-core": "^7.3.0",
     "workbox-expiration": "^6.3.0",
     "workbox-google-analytics": "^6.3.0",
     "workbox-navigation-preload": "^6.3.0",
@@ -39,15 +35,11 @@
     "workbox-window": "^6.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "vite --mode dev",
+    "build": "vite build",
+    "serve": "vite preview",
     "build-sw": "node src/sw-build.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "gts lint",
-    "clean": "gts clean",
     "compile": "tsc",
-    "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
@@ -67,13 +59,15 @@
   "devDependencies": {
     "@jest/globals": "^29.3.1",
     "@types/jest": "^29.2.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
     "@types/testing-library__jest-dom": "^5.14.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "expect": "^29.3.1",
-    "gts": "^3.1.0",
     "http-proxy-middleware": "^2.0.1",
-    "react-scripts": "^5.0.0",
-    "typescript": "^4.9.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.2.5",
     "web-vitals": "^3.0.4",
-    "workbox-build": "^6.2.4"
+    "workbox-build": "^7.3.0"
   }
 }
