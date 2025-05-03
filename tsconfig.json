@@ -1,10 +1,9 @@
 {
-  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "build",
     "esModuleInterop": true,
-    "jsx": "react-jsx", //'react-jsxdev' for development environment
+    "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
     "noPropertyAccessFromIndexSignature": true,
     "allowJs": true,

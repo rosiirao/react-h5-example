@@ -1,4 +1,4 @@
-@import "~include-media/dist/include-media";
+@use "include-media/dist/_include-media"as *;
 
 // Using SCSS variables to store breakpoints
 $breakpoint-tablet: 768px;
@@ -17,8 +17,8 @@ $breakpoint-desktop: 1024px;
 }
 
 // @include media(">tablet") {
-  //   display: inline;
-  // }
+//   display: inline;
+// }
 
 *,
 *::after,

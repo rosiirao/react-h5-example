@@ -33,7 +33,7 @@ const SetupWarning = ({
   };
 
   return (
-    <div onClick={setWarningButtonHandle}>
+    <div onClick={setWarningButtonHandle} onKeyUp={setWarningButtonHandle}>
       Click to {warning ? 'show' : 'disable'} warning for updating state on an
       unmounted component
     </div>

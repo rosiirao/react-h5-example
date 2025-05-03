@@ -1,4 +1,4 @@
-@import './components/color-scheme';
+@use './components/color-scheme'as *;
 
 body {
   margin: 0;
@@ -7,7 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-overscroll-behavior: contain;
+  overscroll-behavior: contain;
 }
 
 .flex {
