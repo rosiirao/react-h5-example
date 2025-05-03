@@ -1,6 +1,11 @@
-import React, {SyntheticEvent, useCallback, useRef, useState} from 'react';
+import type React from 'react';
+import { type SyntheticEvent, useCallback, useRef, useState } from 'react'
 
-import {decodeCodeFromImage} from './Util';
+// import { decodeCodeFromImage } from './Util';
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+function decodeCodeFromImage(params: unknown): Promise<any> {
+  throw new Error('not implemented')
+}
 
 import QRReader from './QRReaderForm';
 import QRWriter from './QRWriterForm';
@@ -34,7 +39,7 @@ export default () => {
         });
 
       const reader = new FileReader();
-      reader.onload = function () {
+      reader.onload = () => {
         // const arrayBuffer: ArrayBuffer = this.result as ArrayBuffer;
         // console.log(arrayBuffer);
         // // decodeQR(new Uint8ClampedArray(arrayBuffer), width, height);
@@ -48,7 +53,7 @@ export default () => {
       //   }
       // }
     },
-    [setQRText]
+    []
   );
 
   return (

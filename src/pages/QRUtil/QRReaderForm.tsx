@@ -1,7 +1,14 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {IScannerControls, decodeCodeFromVideo} from './Util';
+import type React from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
-type Device = {deviceId: string; label: string};
+type IScannerControls = {
+  stop(): void
+};
+function decodeCodeFromVideo(...args: unknown[]): Promise<IScannerControls> {
+  throw new Error('not implemented')
+}
+
+type Device = { deviceId: string; label: string };
 
 let _deviceList: Device[];
 
@@ -13,19 +20,22 @@ const listVideoDevices = async () => {
   if (_deviceList !== undefined) return _deviceList;
   const enumeratorPromise = navigator.mediaDevices.enumerateDevices();
   return enumeratorPromise.then(dc => {
-    return (_deviceList = dc.reduce((d, {deviceId, label, kind}) => {
+    _deviceList = dc.reduce((d, { deviceId, label, kind }) => {
       if (kind === 'videoinput') {
-        d.push({deviceId, label});
+        d.push({ deviceId, label });
       }
       return d;
-    }, [] as typeof _deviceList));
+    }, [] as typeof _deviceList);
+    return _deviceList
   });
 };
 
 const stopStream = (stream: MediaStream) => {
   // stream.getAudioTracks();
   // stream.getVideoTracks();
-  stream.getTracks().forEach(t => t.stop());
+  for (const t of stream.getTracks()) {
+    t.stop()
+  }
 };
 
 type Props = React.PropsWithChildren<{
@@ -33,7 +43,7 @@ type Props = React.PropsWithChildren<{
   updateCodeImage: (src: string) => void;
 }>;
 export default function QRReader(props: Props) {
-  const {updateCodeText, updateCodeImage} = props;
+  const { updateCodeText, updateCodeImage } = props;
 
   const [devices, setDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<string>();
@@ -42,22 +52,22 @@ export default function QRReader(props: Props) {
       setDevices(devices ?? []);
       setSelectedDevice(devices?.[0].deviceId);
     });
-    return () => {};
-  }, [setDevices, setSelectedDevice]);
+    return () => { };
+  }, []);
 
   const onSelectDevice = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const value = e.target.value;
       setSelectedDevice(value);
     },
-    [setSelectedDevice]
+    []
   );
 
   const onChangeFile = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const fileList = e.target.files;
       if (fileList === null) return;
-      let file;
+      let file: Blob | MediaSource;
       for (let i = 0; i < fileList.length; i++) {
         if (fileList[i].type.match(/^image\//)) {
           file = fileList[i];
@@ -73,7 +83,7 @@ export default function QRReader(props: Props) {
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setEncoding(e.target.value);
     },
-    [setEncoding]
+    []
   );
 
   const [scanCameraShow, setScanCameraShow] = useState(false);
@@ -92,9 +102,9 @@ export default function QRReader(props: Props) {
 
     const constraints = {
       audio: false,
-      video: {deviceId: selectedDevice, facingMode: 'environment'},
+      video: { deviceId: selectedDevice, facingMode: 'environment' },
     };
-    const video = document.querySelector('video')!;
+    const video = document.querySelector('video');
     video.focus();
     // show video before decode, otherwise safari can't show video when first active camera
     setScanCameraShow(true);
@@ -132,7 +142,7 @@ export default function QRReader(props: Props) {
       setScanCameraShow(false);
       if (currentStream.current !== null) stopStream(currentStream.current);
     };
-  }, [currentStream, currentStreamControl]);
+  }, []);
 
   return (
     <form
@@ -157,9 +167,9 @@ export default function QRReader(props: Props) {
       <label>
         Camera:
         <select onChange={onSelectDevice}>
-          {devices.map(({deviceId: id, label}, i) => (
+          {devices.map(({ deviceId: id, label }, i) => (
             <option value={id} key={id}>
-              {`${label || 'Camera ' + i}`}
+              {`${label || `Camera ${i}`}`}
             </option>
           ))}
         </select>
@@ -177,6 +187,7 @@ export default function QRReader(props: Props) {
       </button>
       <button type="reset">Reset Reader</button>
       <video
+        muted
         hidden={!scanCameraShow}
         onEnded={() => {
           setScanCameraShow(false);

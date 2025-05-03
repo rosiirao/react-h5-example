@@ -1,17 +1,23 @@
 import {
-  EventHandler,
-  SyntheticEvent,
+  type EventHandler,
+  type SyntheticEvent,
   useCallback,
   useRef,
   useState,
 } from 'react';
-import {encodeToContainer, svgToImageSrc} from './Util';
+// import { encodeToContainer, svgToImageSrc } from './Util';
+function encodeToContainer(...args: unknown[]) {
+  throw new Error('not implemented')
+}
+function svgToImageSrc(...args: unknown[]): string {
+  throw new Error('not implemented')
+}
 
 type Props = React.PropsWithChildren<{
   updateCodeImage: (src: string) => void;
 }>;
 export default function QRWriter(props: Props) {
-  const {updateCodeImage} = props;
+  const { updateCodeImage } = props;
 
   const [textToEncode, setTextToEncode] = useState('');
   const encodedContainer = useRef<HTMLDivElement>(null);
@@ -21,7 +27,7 @@ export default function QRWriter(props: Props) {
     e => {
       setTextToEncode(e.target.value);
     },
-    [setTextToEncode]
+    []
   );
   const encodeText: EventHandler<SyntheticEvent<HTMLElement, Event>> = e => {
     e.preventDefault();
@@ -33,7 +39,9 @@ export default function QRWriter(props: Props) {
       );
       return;
     }
-    container.childNodes.forEach(c => c.remove());
+    for (const c of container.childNodes) {
+      c.remove();
+    }
     encodeToContainer(container, textToEncode);
     const svg = container.querySelector('svg') as SVGElement;
     svg.style.background = 'white';
@@ -54,7 +62,7 @@ export default function QRWriter(props: Props) {
       </label>
       <button type="submit">Encode Text</button>
       <button type="reset">Reset Writer</button>
-      <div hidden ref={encodedContainer}></div>
+      <div hidden ref={encodedContainer} />
     </form>
   );
 }

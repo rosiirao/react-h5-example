@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const useAvailableDevices = () => {
   const devicesWait = useMemo(async () => {
@@ -13,7 +13,7 @@ const useAvailableDevices = () => {
         console.error(e);
         alert(e);
       });
-  }, [devicesWait, setDevices]);
+  }, [devicesWait,]);
   return devices;
 };
 
@@ -24,6 +24,7 @@ export default () => {
     <>
       <pre className="json-list">
         {availableDevices?.map((d, i) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           <code key={i}>{JSON.stringify(d, null, '  ')}</code>
         ))}
       </pre>
