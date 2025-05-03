@@ -1,14 +1,14 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import routes from './router';
 
 import ThemeSwitch from './components/ThemeSwitch';
-import ThemeContext, {useTheme, Theme} from './components/ThemeContext';
+import ThemeContext, { useTheme, Theme } from './components/ThemeContext';
 
 // import ViewTransition from './components/ViewTransition';
 import Nav from './components/ViewNav';
 
 import './Home.scss';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 
 export default function Home() {
   const [mode, toggle] = useTheme();
@@ -25,7 +25,7 @@ export default function Home() {
   const theme = mode !== undefined ? Theme[mode] : 'auto';
   return (
     <ThemeContext.Provider value={[mode, toggle]}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router basename={import.meta.env.BASE_URL}>
         <header color-scheme="dark">
           <Nav horizontal={true} routes={routes}>
             <ThemeSwitch
@@ -41,7 +41,7 @@ export default function Home() {
             {routes.map(r => (
               <Route
                 key={r.path}
-                {...(r.exact ? {caseSensitive: true} : {})}
+                {...(r.exact ? { caseSensitive: true } : {})}
                 path={r.path}
                 // element={
                 //   <ViewTransition
@@ -63,7 +63,7 @@ export default function Home() {
                     r.component
                   )
                 }
-              ></Route>
+              />
             ))}
           </Routes>
         </main>
